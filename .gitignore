@@ -4,3 +4,8 @@ __pycache__/
 *.pyo
 .env
 *.sqlite3
+.venv/
+.idea/
+.claude/
+*.mp4
+*.pptx

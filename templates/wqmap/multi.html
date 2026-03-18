@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+{% block title %}WQ Management — {{ count }} Systems{% endblock %}
+
+{% block extra_css %}
+html,body { overflow:hidden; height:100vh; min-height:0; margin:0; padding:0; }
+.page { display:flex; flex-direction:column; height:100vh; min-height:0; background:#f0f2f5; }
+
+.topbar { display:flex; align-items:center; justify-content:space-between; padding:4px 12px; background:#fff; border-bottom:1px solid #e5e7eb; flex-shrink:0; }
+.topbar-left { display:flex; align-items:center; gap:8px; }
+.topbar .logo { width:20px; height:20px; background:#0369a1; border-radius:4px; display:flex; align-items:center; justify-content:center; }
+.topbar h1 { font-size:12px; color:#0c4a6e; font-weight:700; }
+.topbar-right { display:flex; align-items:center; gap:8px; }
+.topbar-right a { font-size:10px; color:#64748b; text-decoration:none; font-weight:600; }
+.topbar-right a:hover { color:#0369a1; }
+.topbar-right a.active { color:#0369a1; border-bottom:1px solid #0369a1; }
+.topbar-right .logout { color:#dc2626; }
+
+/* Grid */
+.grid { flex:1; display:grid; gap:4px; padding:4px 50px; min-height:0; position:relative; z-index:1;
+  grid-template-columns: repeat({{ cols }}, 1fr);
+  grid-template-rows: repeat({{ rows }}, 1fr);
+}
+
+/* System panel */
+.sys { background:#fff; border:1px solid #e5e7eb; border-radius:4px; display:flex; flex-direction:column; min-height:0; position:relative; overflow:visible; }
+.sys-head { display:flex; align-items:center; justify-content:space-between; padding:2px 6px; border-bottom:1px solid #f0f0f0; flex-shrink:0; }
+.sys-name { font-size:10px; font-weight:700; color:#0369a1; }
+.sys-info { font-size:8px; color:#94a3b8; font-family:Consolas,monospace; }
+
+/* Mini toolbar */
+.mtb { display:flex; gap:0; background:#f9fafb; border:1px solid #e5e7eb; border-radius:4px; overflow:visible; position:relative; }
+.mtb-btn { padding:2px 6px; font-size:8px; font-weight:700; color:#64748b; background:none; border:none; border-right:1px solid #e5e7eb; cursor:pointer; text-transform:uppercase; letter-spacing:.4px; }
+.mtb-btn:last-of-type { border-right:none; }
+.mtb-btn:hover { color:#0369a1; background:#f0f9ff; }
+.mtb-btn.active { color:#fff; background:#0369a1; }
+
+.mtb-drop { position:absolute; top:100%; right:0; margin-top:2px; background:#fff; border:1px solid #e5e7eb; border-radius:4px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:6px 8px; display:none; z-index:50; white-space:nowrap; }
+.mtb-drop.open { display:flex; gap:6px; align-items:flex-end; }
+
+.fi { display:flex; flex-direction:column; }
+.fi label { font-size:7px; color:#6b7280; font-weight:700; text-transform:uppercase; letter-spacing:.4px; margin-bottom:1px; }
+.fi input,.fi select { padding:2px 4px; background:#f9fafb; border:1px solid #d1d5db; border-radius:2px; color:#111; font-size:10px; font-family:Consolas,monospace; outline:none; width:70px; }
+.fi input:focus { border-color:#0369a1; }
+.fi select { width:80px; font-size:9px; }
+.fi-sm input { width:55px; }
+.ck { display:flex; align-items:center; gap:2px; }
+.ck label { font-size:8px; color:#475569; cursor:pointer; font-weight:600; }
+.ck input { width:10px; height:10px; accent-color:#0369a1; }
+.sep { width:1px; height:20px; background:#e5e7eb; align-self:center; }
+
+/* Chart area inside system */
+.sys-chart { flex:1; min-height:0; }
+.sys-bottom { display:flex; align-items:center; gap:6px; padding:2px 6px; border-top:1px solid #f0f0f0; flex-shrink:0; font-size:9px; }
+.sys-bottom .bl { font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; font-size:8px; }
+.sys-bottom .bv { color:#1e293b; font-family:Consolas,monospace; font-size:9px; }
+.sys-bottom .bv.err { color:#dc2626; }
+.sys-bottom select { padding:1px 3px; font-size:8px; border:1px solid #d1d5db; border-radius:2px; font-family:Consolas,monospace; }
+
+/* ── Navigation arrows ── */
+.nav-arrow {
+  position:fixed; top:50%; transform:translateY(-50%); z-index:9999;
+  width:44px; height:80px; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.95); border:1px solid #d1d5db;
+  cursor:pointer; transition:all .15s; text-decoration:none;
+  box-shadow:0 2px 12px rgba(0,0,0,.12);
+  pointer-events:auto;
+}
+.nav-arrow:hover { background:#0369a1; border-color:#0369a1; }
+.nav-arrow:hover svg { stroke:#fff; }
+.nav-arrow svg { stroke:#475569; transition:stroke .15s; }
+.nav-arrow.left { left:0; border-radius:0 8px 8px 0; border-left:none; }
+.nav-arrow.right { right:0; border-radius:8px 0 0 8px; border-right:none; }
+.nav-arrow.disabled { opacity:.2; pointer-events:none; cursor:default; }
+.nav-label { position:fixed; bottom:8px; left:50%; transform:translateX(-50%); z-index:9999;
+  font-size:10px; color:#94a3b8; font-weight:600; letter-spacing:1px;
+  background:rgba(255,255,255,.95); padding:3px 14px; border-radius:12px; border:1px solid #e5e7eb;
+  pointer-events:none; }
+{% endblock %}
+
+{% block content %}
+{% with slides="1,2,4,8,16" %}
+<div class="page">
+  <!-- Navigation arrows -->
+  {% if prev_count %}
+  <a class="nav-arrow left" href="{% url 'multi_chart' prev_count %}" id="nav-prev">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+  </a>
+  {% else %}
+  <div class="nav-arrow left disabled"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+  {% endif %}
+
+  {% if next_count %}
+  <a class="nav-arrow right" href="{% url 'multi_chart' next_count %}" id="nav-next">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg>
+  </a>
+  {% else %}
+  <div class="nav-arrow right disabled"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></div>
+  {% endif %}
+
+  <div class="nav-label">{{ count }} System{{ count|pluralize }} — {{ slide_index }}/{{ slide_total }}</div>
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><circle cx="12" cy="12" r="10"/></svg></div>
+      <h1>Water Quality Management</h1>
+    </div>
+    <div class="topbar-right">
+      <a href="{% url 'multi_chart' 1 %}" {% if count == 1 %}class="active"{% endif %}>1</a>
+      <a href="{% url 'multi_chart' 2 %}" {% if count == 2 %}class="active"{% endif %}>2</a>
+      <a href="{% url 'multi_chart' 4 %}" {% if count == 4 %}class="active"{% endif %}>4</a>
+      <a href="{% url 'multi_chart' 8 %}" {% if count == 8 %}class="active"{% endif %}>8</a>
+      <a href="{% url 'multi_chart' 16 %}" {% if count == 16 %}class="active"{% endif %}>16</a>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'logout' %}" class="logout">Logout</a>
+    </div>
+  </div>
+
+  <div class="grid">
+    {% for sys in systems %}
+    <div class="sys" id="sys-{{ sys.id }}" data-dbid="{{ sys.id }}">
+      <div class="sys-head">
+        <span class="sys-name">{{ sys.name }}</span>
+        <div class="mtb" data-sid="{{ sys.id }}">
+          <button class="mtb-btn" data-panel="vts">V·T·S</button>
+          <button class="mtb-btn" data-panel="wp">WP</button>
+          <button class="mtb-btn" data-panel="lim">Lim</button>
+          <button class="mtb-btn" data-panel="ca">Ca</button>
+          <button class="mtb-btn" data-panel="disp">Disp</button>
+          <div class="mtb-drop" data-p="vts">
+            <div class="fi fi-sm"><label>Vol</label><input type="number" data-f="volume" value="1000" step="1"></div>
+            <div class="fi fi-sm"><label>T°C</label><input type="number" data-f="temp" value="25" step="0.1"></div>
+            <div class="fi fi-sm"><label>S</label><input type="number" data-f="salinity" value="35" step="0.1"></div>
+          </div>
+          <div class="mtb-drop" data-p="wp">
+            <div class="fi fi-sm"><label>i-pH</label><input type="number" data-f="initial_ph" value="7.50" step="0.01"></div>
+            <div class="fi fi-sm"><label>i-Alk</label><input type="number" data-f="initial_alk" value="2.00" step="0.01"></div>
+            <div class="sep"></div>
+            <div class="fi fi-sm"><label>t-pH</label><input type="number" data-f="target_ph" value="8.20" step="0.01"></div>
+            <div class="fi fi-sm"><label>t-Alk</label><input type="number" data-f="target_alk" value="3.20" step="0.01"></div>
+          </div>
+          <div class="mtb-drop" data-p="lim">
+            <div class="fi fi-sm"><label>TAN</label><input type="number" data-f="tan" value="1.0" step="0.1"></div>
+            <div class="fi fi-sm"><label>UIA</label><input type="number" data-f="uia_limit" value="0.02" step="0.001"></div>
+            <div class="ck"><input type="checkbox" data-f="show_uia" checked style="accent-color:#dc2626"><label>NH₃</label></div>
+            <div class="sep"></div>
+            <div class="fi fi-sm"><label>CO₂</label><input type="number" data-f="co2_limit" value="15" step="0.1"></div>
+            <div class="ck"><input type="checkbox" data-f="show_co2" checked style="accent-color:#d97706"><label>CO₂</label></div>
+          </div>
+          <div class="mtb-drop" data-p="ca">
+            <div class="fi fi-sm"><label>Ca²⁺</label><input type="number" data-f="calcium" value="412" step="1"></div>
+            <div class="ck"><input type="checkbox" data-f="show_omega" checked><label>Ω</label></div>
+          </div>
+          <div class="mtb-drop" data-p="disp">
+            <div class="ck"><input type="checkbox" data-f="show_ph_major" checked><label>pH+</label></div>
+            <div class="ck"><input type="checkbox" data-f="show_ph_minor" checked><label>pH-</label></div>
+            <div class="fi fi-sm"><label>DIC</label><input type="number" data-f="dic_max" value="6" step="0.5"></div>
+            <div class="fi fi-sm"><label>Alk</label><input type="number" data-f="alk_max" value="6" step="0.5"></div>
+          </div>
+        </div>
+        <span class="sys-info" data-f="info"></span>
+      </div>
+      <div class="sys-chart" data-f="chart"></div>
+      <div class="sys-bottom">
+        <span class="bl">Adj</span>
+        <select data-f="reagent1"><option value="nahco3" selected>NaHCO₃</option><option value="na2co3">Na₂CO₃</option><option value="naoh">NaOH</option><option value="caco3">CaCO₃</option><option value="caoh2">Ca(OH)₂</option><option value="cao">CaO</option><option value="plusCo2">+CO₂</option><option value="minusCo2">-CO₂</option><option value="hcl">HCl</option></select>
+        <select data-f="reagent2"><option value="nahco3">NaHCO₃</option><option value="na2co3">Na₂CO₃</option><option value="naoh" selected>NaOH</option><option value="caco3">CaCO₃</option><option value="caoh2">Ca(OH)₂</option><option value="cao">CaO</option><option value="plusCo2">+CO₂</option><option value="minusCo2">-CO₂</option><option value="hcl">HCl</option></select>
+        <div class="ck"><input type="checkbox" data-f="show_adjust" checked style="accent-color:#7c3aed"><label>Path</label></div>
+        <span class="bv" data-f="adj-result">—</span>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script>
+const CL={phMajor:'#334155',phMinor:'#94a3b8',omega:'#0369a1',uia:'#dc2626',uiaFill:'rgba(220,38,38,0.06)',co2:'#d97706',co2Fill:'rgba(217,119,6,0.06)',initial:'#dc2626',target:'#16a34a',arrow:'#64748b',grid:'#e2e8f0',adjust:'#7c3aed'};
+const HEAVY=new Set(['volume','temp','salinity','calcium','dic_max','alk_max']);
+const INIT_DATA = {{ systems_json|safe }};
+const CSRF = '{{ csrf_token }}';
+
+class WQChart {
+  constructor(el, initData) {
+    this.el = el;
+    this.dbId = parseInt(el.dataset.dbid);
+    this.full = null; this.light = null; this.adj = null;
+    this.created = false;
+    this._dH = null; this._dL = null; this._dA = null; this._dS = null;
+    this.chartEl = el.querySelector('[data-f="chart"]');
+    this.infoEl = el.querySelector('[data-f="info"]');
+    this.adjEl = el.querySelector('[data-f="adj-result"]');
+    if (initData) this._applyState(initData);
+    this._bindEvents();
+    this.fetchFull();
+  }
+
+  _applyState(d) {
+    const set = (f, v) => { const e = this.$(f); if (e) { if (e.type === 'checkbox') e.checked = v; else e.value = v; } };
+    set('volume', d.volume); set('temp', d.temperature); set('salinity', d.salinity);
+    set('initial_ph', d.initial_ph); set('initial_alk', d.initial_alk);
+    set('target_ph', d.target_ph); set('target_alk', d.target_alk);
+    set('tan', d.tan); set('uia_limit', d.uia_limit); set('co2_limit', d.co2_limit);
+    set('calcium', d.calcium); set('reagent1', d.reagent1); set('reagent2', d.reagent2);
+    set('show_uia', d.show_uia); set('show_co2', d.show_co2);
+    set('show_omega', d.show_omega); set('show_adjust', d.show_adjust);
+    set('show_ph_major', d.show_ph_major); set('show_ph_minor', d.show_ph_minor);
+    set('dic_max', d.dic_max); set('alk_max', d.alk_max);
+  }
+
+  _autoSave() {
+    clearTimeout(this._dS);
+    this._dS = setTimeout(() => {
+      const d = {
+        id: this.dbId,
+        volume: this.v('volume'), temperature: this.v('temp'), salinity: this.v('salinity'),
+        initial_ph: this.v('initial_ph'), initial_alk: this.v('initial_alk'),
+        target_ph: this.v('target_ph'), target_alk: this.v('target_alk'),
+        tan: this.v('tan'), uia_limit: this.v('uia_limit'), co2_limit: this.v('co2_limit'),
+        calcium: this.v('calcium'), reagent1: this.v('reagent1'), reagent2: this.v('reagent2'),
+        show_uia: this.chk('show_uia'), show_co2: this.chk('show_co2'),
+        show_omega: this.chk('show_omega'), show_adjust: this.chk('show_adjust'),
+        show_ph_major: this.chk('show_ph_major'), show_ph_minor: this.chk('show_ph_minor'),
+        dic_max: this.v('dic_max'), alk_max: this.v('alk_max'),
+      };
+      fetch('/api/system/save/', {
+        method: 'POST', headers: {'Content-Type':'application/json','X-CSRFToken':CSRF},
+        body: JSON.stringify(d),
+      }).catch(console.error);
+    }, 1000);
+  }
+
+  $(f) { return this.el.querySelector(`[data-f="${f}"]`); }
+  v(f) { return this.$(f)?.value; }
+  chk(f) { const e=this.$(f); return e ? e.checked : true; }
+
+  cp() {
+    return {temp:this.v('temp'),salinity:this.v('salinity'),calcium:this.v('calcium'),
+      initial_ph:this.v('initial_ph'),initial_alk:this.v('initial_alk'),
+      target_ph:this.v('target_ph'),target_alk:this.v('target_alk'),
+      dic_max:this.v('dic_max'),alk_max:this.v('alk_max'),volume:this.v('volume'),
+      tan:this.v('tan'),uia_limit:this.v('uia_limit'),co2_limit:this.v('co2_limit')};
+  }
+
+  _bindEvents() {
+    this.el.querySelectorAll('input[type="number"]').forEach(e => {
+      const h = HEAVY.has(e.dataset.f) ? ()=>{this._schedHeavy();this._autoSave();} : ()=>{this._schedLight();this._autoSave();};
+      e.addEventListener('change',h); e.addEventListener('input',h);
+    });
+    this.el.querySelectorAll('select').forEach(e => e.addEventListener('change',()=>{this._schedAdj();this._autoSave();}));
+    this.el.querySelectorAll('input[type="checkbox"]').forEach(e => e.addEventListener('change',()=>{this.render();this._autoSave();}));
+
+    // toolbar dropdowns
+    const mtb = this.el.querySelector('.mtb');
+    let openDrop = null;
+    mtb.querySelectorAll('.mtb-btn').forEach(btn => {
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const p = mtb.querySelector(`.mtb-drop[data-p="${btn.dataset.panel}"]`);
+        if (openDrop === p) { p.classList.remove('open'); btn.classList.remove('active'); openDrop=null; }
+        else {
+          mtb.querySelectorAll('.mtb-drop').forEach(d=>d.classList.remove('open'));
+          mtb.querySelectorAll('.mtb-btn').forEach(b=>b.classList.remove('active'));
+          p.classList.add('open'); btn.classList.add('active'); openDrop=p;
+        }
+      });
+    });
+    document.addEventListener('click', ()=>{ if(openDrop){openDrop.classList.remove('open'); mtb.querySelectorAll('.mtb-btn').forEach(b=>b.classList.remove('active')); openDrop=null;} });
+    mtb.querySelectorAll('.mtb-drop').forEach(d=>d.addEventListener('click',e=>e.stopPropagation()));
+  }
+
+  _schedHeavy() { clearTimeout(this._dH); clearTimeout(this._dL); this._dH=setTimeout(()=>this.fetchFull(),400); }
+  _schedLight() { clearTimeout(this._dL); this._dL=setTimeout(()=>{this.fetchLight();this.fetchAdj();},150); }
+  _schedAdj() { clearTimeout(this._dA); this._dA=setTimeout(()=>this.fetchAdj(),150); }
+
+  fetchFull() {
+    this.infoEl.textContent = `T${this.v('temp')}°C S${this.v('salinity')} Ca${this.v('calcium')}`;
+    fetch(`/api/deffeyes-data/?${new URLSearchParams(this.cp())}`)
+      .then(r=>r.json()).then(d=>{
+        this.full=d; this.light={initial_waypoint:d.initial_waypoint,target_waypoint:d.target_waypoint,uia_boundary:d.uia_boundary,co2_boundary:d.co2_boundary};
+        this.render(); this.fetchAdj();
+      }).catch(console.error);
+  }
+  fetchLight() {
+    if(!this.full) return this.fetchFull();
+    this.infoEl.textContent = `T${this.v('temp')}°C S${this.v('salinity')} Ca${this.v('calcium')}`;
+    fetch(`/api/deffeyes-light/?${new URLSearchParams(this.cp())}`)
+      .then(r=>r.json()).then(d=>{this.light=d;this.render();}).catch(console.error);
+  }
+  fetchAdj() {
+    fetch(`/api/deffeyes-adjust/?${new URLSearchParams({...this.cp(),reagent1:this.v('reagent1'),reagent2:this.v('reagent2')})}`)
+      .then(r=>r.json()).then(d=>{this.adj=d;this._showAdj(d);this.render();}).catch(console.error);
+  }
+
+  _showAdj(d) {
+    if(!d||d.error){this.adjEl.textContent='—';this.adjEl.className='bv';return;}
+    if(!d.feasible){this.adjEl.textContent='N/A';this.adjEl.className='bv err';return;}
+    this.adjEl.className='bv';
+    const f=(v,u)=>v>=1?`${v.toFixed(1)}${u}`:v>=.001?`${(v*1000).toFixed(1)}m${u}`:`${v.toFixed(4)}${u}`;
+    this.adjEl.innerHTML=`${d.reagent1.cmpd} ${f(d.reagent1.amount,d.reagent1.unit)} · ${d.reagent2.cmpd} ${f(d.reagent2.amount,d.reagent2.unit)}`;
+  }
+
+  render() {
+    if(!this.full||!this.light) return;
+    const dicMax=parseFloat(this.v('dic_max')),alkMax=parseFloat(this.v('alk_max'));
+    const filt=pts=>pts.filter(p=>p.y>=-.5&&p.y<=alkMax*1.05&&p.x>=0&&p.x<=dicMax);
+    const d=this.full,l=this.light,E={x:[],y:[]};
+
+    const T=[];
+
+    // 1) pH isopleths FIRST (background layer — subtle behind zones)
+    d.minor_isopleths.forEach(iso=>{if(this.chk('show_ph_minor')){const p=filt(iso.points);T.push({x:p.map(q=>q.x),y:p.map(q=>q.y),mode:'lines',line:{color:'rgba(148,163,184,0.25)',width:.5,dash:'dot'},showlegend:false,hoverinfo:'skip'});}else T.push({...E,mode:'lines',showlegend:false,hoverinfo:'skip'});});
+    d.major_isopleths.forEach(iso=>{if(this.chk('show_ph_major')){const p=filt(iso.points);T.push({x:p.map(q=>q.x),y:p.map(q=>q.y),mode:'lines',line:{color:'rgba(51,65,85,0.3)',width:.8},showlegend:false,hoverinfo:'skip'});}else T.push({...E,mode:'lines',showlegend:false,hoverinfo:'skip'});});
+
+    // 2) Zone fills (semi-transparent, over pH lines)
+    let co2F={...E,fill:'toself',fillcolor:CL.co2Fill,line:{width:0},showlegend:false,hoverinfo:'skip'};
+    let co2L={...E,mode:'lines',line:{color:CL.co2,width:1.5,dash:'dashdot'},showlegend:false,hoverinfo:'skip'};
+    if(this.chk('show_co2')&&l.co2_boundary&&l.co2_boundary.points){const p=filt(l.co2_boundary.points);if(p.length>2){co2F={...co2F,x:[...p.map(q=>q.x),p[p.length-1].x,p[0].x],y:[...p.map(q=>q.y),0,0]};co2L={...co2L,x:p.map(q=>q.x),y:p.map(q=>q.y)};}}
+    T.push(co2F,co2L);
+
+    let uF={...E,fill:'toself',fillcolor:CL.uiaFill,line:{width:0},showlegend:false,hoverinfo:'skip'};
+    let uL={...E,mode:'lines',line:{color:CL.uia,width:1.5,dash:'dashdot'},showlegend:false,hoverinfo:'skip'};
+    if(this.chk('show_uia')&&l.uia_boundary&&l.uia_boundary.points){const p=filt(l.uia_boundary.points);if(p.length>2){uF={...uF,x:[...p.map(q=>q.x),p[p.length-1].x,p[0].x],y:[...p.map(q=>q.y),alkMax,alkMax]};uL={...uL,x:p.map(q=>q.x),y:p.map(q=>q.y)};}}
+    T.push(uF,uL);
+
+    // 3) Omega boundary
+    if(this.chk('show_omega')&&d.omega_boundary.length>0){const p=filt(d.omega_boundary);T.push({x:p.map(q=>q.x),y:p.map(q=>q.y),mode:'lines',line:{color:CL.omega,width:2,dash:'dash'},showlegend:false,hoverinfo:'skip'});}
+    else T.push({...E,mode:'lines',showlegend:false,hoverinfo:'skip'});
+
+    // 4) Waypoints — bigger markers
+    T.push({x:[l.initial_waypoint.dic],y:[l.initial_waypoint.alk],mode:'markers+text',marker:{color:CL.initial,size:12,symbol:'circle',line:{color:'#fff',width:2}},text:[`pH ${l.initial_waypoint.ph}`],textposition:'top right',textfont:{color:CL.initial,size:8,family:'Segoe UI'},showlegend:false,hovertemplate:`<b>Current</b><br>pH ${l.initial_waypoint.ph}<br>DIC %{x:.2f}<br>Alk %{y:.2f}<extra></extra>`});
+    T.push({x:[l.target_waypoint.dic],y:[l.target_waypoint.alk],mode:'markers+text',marker:{color:CL.target,size:12,symbol:'diamond',line:{color:'#fff',width:2}},text:[`pH ${l.target_waypoint.ph}`],textposition:'top right',textfont:{color:CL.target,size:8,family:'Segoe UI'},showlegend:false,hovertemplate:`<b>Target</b><br>pH ${l.target_waypoint.ph}<br>DIC %{x:.2f}<br>Alk %{y:.2f}<extra></extra>`});
+
+    // 5) Adjustment path — only when show_adjust is checked
+    const adj=this.adj;
+    const showAdj=this.chk('show_adjust');
+    if(showAdj&&adj&&adj.feasible&&adj.adjustment_point){
+      const ap=adj.adjustment_point;
+      // Dashed arrow line
+      T.push({x:[l.initial_waypoint.dic,ap.dic,l.target_waypoint.dic],y:[l.initial_waypoint.alk,ap.alk,l.target_waypoint.alk],mode:'lines+markers',line:{color:CL.adjust,width:2.5},marker:{color:CL.adjust,size:8,symbol:'star',line:{color:'#fff',width:1.5}},showlegend:false,hovertemplate:'Adj<br>DIC %{x:.2f}<br>Alk %{y:.2f}<extra></extra>'});
+    } else {
+      T.push({...E,mode:'lines',showlegend:false,hoverinfo:'skip'});
+    }
+
+    // Compact annotations
+    const A=[];
+    if(this.chk('show_ph_major')) d.major_isopleths.forEach(iso=>{const p=filt(iso.points);if(p.length>5){const pt=p[Math.floor(p.length*.7)];A.push({x:pt.x,y:pt.y,text:`${iso.ph}`,showarrow:false,font:{color:'#94a3b8',size:7},borderpad:1});}});
+
+    const layout={
+      xaxis:{title:{text:'DIC',font:{color:'#94a3b8',size:8}},range:[0,dicMax],gridcolor:CL.grid,tickfont:{color:'#94a3b8',size:7},linecolor:'#e5e7eb',showline:true,mirror:true},
+      yaxis:{title:{text:'Alk',font:{color:'#94a3b8',size:8}},range:[0,alkMax],gridcolor:CL.grid,tickfont:{color:'#94a3b8',size:7},linecolor:'#e5e7eb',showline:true,mirror:true},
+      plot_bgcolor:'#fff',paper_bgcolor:'#fff',
+      margin:{t:4,r:4,b:22,l:28},
+      annotations:A,font:{family:'Segoe UI,sans-serif'},
+      showlegend:false,
+    };
+    const cfg={responsive:true,displayModeBar:false};
+    if(this.created) Plotly.react(this.chartEl,T,layout,cfg);
+    else { Plotly.newPlot(this.chartEl,T,layout,cfg); this.created=true; }
+  }
+}
+
+// Init all systems with DB data
+document.addEventListener('DOMContentLoaded', () => {
+  const dataMap = {};
+  INIT_DATA.forEach(d => { dataMap[d.id] = d; });
+  document.querySelectorAll('.sys').forEach(el => {
+    const dbId = parseInt(el.dataset.dbid);
+    new WQChart(el, dataMap[dbId] || null);
+  });
+});
+
+// Keyboard navigation: left/right arrows for slides
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowLeft') { const el=document.getElementById('nav-prev'); if(el) el.click(); }
+  if (e.key === 'ArrowRight') { const el=document.getElementById('nav-next'); if(el) el.click(); }
+});
+</script>
+{% endwith %}
+{% endblock %}

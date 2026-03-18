@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+{% block title %}Deffeyes Chart - Aqua Intel{% endblock %}
+
+{% block extra_css %}
+html,body { overflow:hidden; height:100vh; min-height:0; margin:0; padding:0; }
+.page { display:flex; flex-direction:column; height:100vh; min-height:0; background:#f8f9fb; }
+
+/* ── Top bar ── */
+.topbar { display:flex; align-items:center; justify-content:space-between; padding:5px 14px; background:#fff; border-bottom:1px solid #e5e7eb; flex-shrink:0; }
+.topbar-left { display:flex; align-items:center; gap:8px; }
+.topbar .logo { width:22px; height:22px; background:#0369a1; border-radius:4px; display:flex; align-items:center; justify-content:center; }
+.topbar h1 { font-size:13px; color:#0c4a6e; font-weight:700; }
+.topbar-right { display:flex; align-items:center; gap:10px; }
+.topbar-right a { font-size:10px; color:#64748b; text-decoration:none; font-weight:600; }
+.topbar-right a:hover { color:#0369a1; }
+.topbar-right .logout { color:#dc2626; }
+
+/* ── System label ── */
+.sys-label { position:absolute; top:6px; left:10px; z-index:20; font-size:11px; font-weight:700; color:#0369a1; background:rgba(255,255,255,.95); padding:2px 8px; border-radius:3px; border:1px solid #bae6fd; }
+.sys-label select { border:none; background:none; color:#0369a1; font-weight:700; font-size:11px; cursor:pointer; outline:none; padding:0 2px; }
+.sys-label .sys-btns { display:inline-flex; gap:4px; margin-left:6px; }
+.sys-label .sys-btns button { background:none; border:1px solid #bae6fd; border-radius:3px; color:#0369a1; font-size:9px; font-weight:600; padding:1px 6px; cursor:pointer; transition:all .12s; }
+.sys-label .sys-btns button:hover { background:#e0f2fe; }
+.sys-label .sys-btns .del { color:#dc2626; border-color:#fecaca; }
+.sys-label .sys-btns .del:hover { background:#fef2f2; }
+
+/* ── Toolbar (tabs + inputs overlay on chart) ── */
+.toolbar { position:absolute; top:6px; right:10px; z-index:20; display:flex; gap:0; background:#fff; border:1px solid #e5e7eb; border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,.08); overflow:visible; }
+.tb-btn { padding:5px 12px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#64748b; background:#fff; border:none; border-right:1px solid #e5e7eb; cursor:pointer; transition:all .12s; white-space:nowrap; }
+.tb-btn:last-of-type { border-right:none; }
+.tb-btn:hover { color:#0369a1; background:#f0f9ff; }
+.tb-btn.active { color:#fff; background:#0369a1; }
+
+/* ── Dropdown panel ── */
+.tb-dropdown { position:absolute; top:100%; right:0; margin-top:4px; background:#fff; border:1px solid #e5e7eb; border-radius:6px; box-shadow:0 4px 16px rgba(0,0,0,.12); padding:8px 12px; display:none; z-index:30; white-space:nowrap; }
+.tb-dropdown.open { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; }
+
+/* ── Inline inputs ── */
+.fi { display:flex; flex-direction:column; min-width:80px; }
+.fi label { font-size:8px; color:#6b7280; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:1px; }
+.fi input,.fi select { padding:3px 6px; background:#f9fafb; border:1px solid #d1d5db; border-radius:3px; color:#111827; font-size:11px; font-family:Consolas,monospace; outline:none; width:100%; }
+.fi input:focus,.fi select:focus { border-color:#0369a1; }
+.fi select { font-size:10px; }
+.fi-sm { min-width:65px; max-width:80px; }
+.fi-md { min-width:85px; max-width:110px; }
+
+.ck { display:flex; align-items:center; gap:3px; align-self:center; }
+.ck label { font-size:9px; color:#475569; cursor:pointer; font-weight:600; white-space:nowrap; }
+.ck input { accent-color:#0369a1; width:12px; height:12px; cursor:pointer; }
+
+.sep { width:1px; height:28px; background:#e5e7eb; align-self:center; }
+
+/* ── Chart ── */
+.chart-wrap { flex:1; position:relative; margin:4px 8px; background:#fff; border:1px solid #e5e7eb; border-radius:6px; overflow:visible; min-height:0; z-index:0; }
+#deffeyes-chart { width:100%; height:100%; }
+.loading-overlay { position:absolute; inset:0; background:rgba(255,255,255,.85); display:none; align-items:center; justify-content:center; z-index:10; border-radius:6px; }
+.loading-overlay.active { display:flex; }
+.loading-spinner { color:#0369a1; font-size:11px; font-weight:600; }
+
+/* ── Bottom bar (adjustment) ── */
+.bottom-bar { flex-shrink:0; padding:5px 14px; background:#fff; border-top:1px solid #e5e7eb; display:flex; align-items:center; gap:14px; min-height:32px; }
+.bottom-bar .bl { font-size:9px; font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+.bottom-bar .bv { font-size:11px; color:#1e293b; font-family:Consolas,monospace; }
+.bottom-bar .bv b { color:#475569; }
+.bottom-bar .bv.err { color:#dc2626; font-weight:600; }
+.bottom-bar .reagent-sel { display:flex; align-items:center; gap:4px; margin-left:auto; }
+.bottom-bar .reagent-sel label { font-size:8px; color:#6b7280; font-weight:700; text-transform:uppercase; }
+.bottom-bar .reagent-sel select { padding:2px 4px; font-size:10px; border:1px solid #d1d5db; border-radius:3px; color:#111; font-family:Consolas,monospace; outline:none; }
+.bottom-bar .reagent-sel select:focus { border-color:#7c3aed; }
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <!-- Top bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="logo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 108 0 4 4 0 00-8 0"/></svg></div>
+            <h1>Water Quality Management</h1>
+        </div>
+        <div class="topbar-right">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}" class="logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Chart with overlaid controls -->
+    <div class="chart-wrap">
+        <!-- System label -->
+        <div class="sys-label">
+            <select id="sys-select"><option value="0">New System</option></select>
+            <span style="font-weight:400;color:#64748b;font-size:9px;" id="info-params">T 25.0°C · S 35.0 · Ca²⁺ 412</span>
+            <span class="sys-btns">
+                <button onclick="saveSystem()">Save</button>
+                <button class="del" onclick="deleteSystem()">Del</button>
+            </span>
+        </div>
+
+        <!-- Toolbar (mounted on chart) -->
+        <div class="toolbar" id="toolbar">
+            <button class="tb-btn" data-panel="p-vts">V·T·S</button>
+            <button class="tb-btn" data-panel="p-wp">Waypoints</button>
+            <button class="tb-btn" data-panel="p-lim">Limits</button>
+            <button class="tb-btn" data-panel="p-ca">Ca²⁺·Ω</button>
+            <button class="tb-btn" data-panel="p-disp">Display</button>
+
+            <!-- Dropdown panels -->
+            <div class="tb-dropdown" id="p-vts">
+                <div class="fi fi-md"><label>Volume (L)</label><input type="number" id="volume" value="1000" min="1" max="1000000" step="1"></div>
+                <div class="fi fi-sm"><label>Temp (°C)</label><input type="number" id="temp" value="25.0" min="4" max="42" step="0.1"></div>
+                <div class="fi fi-sm"><label>Salinity</label><input type="number" id="salinity" value="35.0" min="0" max="50" step="0.1"></div>
+            </div>
+            <div class="tb-dropdown" id="p-wp">
+                <div class="fi fi-sm"><label>Init pH</label><input type="number" id="initial_ph" value="7.50" min="5.7" max="10.5" step="0.01"></div>
+                <div class="fi fi-md"><label>Init Alk</label><input type="number" id="initial_alk" value="2.00" min="0" max="10" step="0.01"></div>
+                <div class="sep"></div>
+                <div class="fi fi-sm"><label>Tgt pH</label><input type="number" id="target_ph" value="8.20" min="5.7" max="10.5" step="0.01"></div>
+                <div class="fi fi-md"><label>Tgt Alk</label><input type="number" id="target_alk" value="3.20" min="0" max="10" step="0.01"></div>
+            </div>
+            <div class="tb-dropdown" id="p-lim">
+                <div class="fi fi-md"><label>TAN (mg/L)</label><input type="number" id="tan" value="1.0" min="0" max="100" step="0.1"></div>
+                <div class="fi fi-sm"><label>UIA Lim</label><input type="number" id="uia_limit" value="0.02" min="0.001" max="1" step="0.001"></div>
+                <div class="ck"><input type="checkbox" id="show_uia" checked style="accent-color:#dc2626"><label for="show_uia">NH₃</label></div>
+                <div class="sep"></div>
+                <div class="fi fi-md"><label>CO₂ (mg/L)</label><input type="number" id="co2_limit" value="15.0" min="0" max="100" step="0.1"></div>
+                <div class="ck"><input type="checkbox" id="show_co2" checked style="accent-color:#d97706"><label for="show_co2">CO₂</label></div>
+            </div>
+            <div class="tb-dropdown" id="p-ca">
+                <div class="fi fi-md"><label>Ca²⁺ (mg/L)</label><input type="number" id="calcium" value="412" min="0" max="600" step="1"></div>
+                <div class="ck"><input type="checkbox" id="show_omega" checked><label for="show_omega">Ω=1</label></div>
+            </div>
+            <div class="tb-dropdown" id="p-disp">
+                <div class="ck"><input type="checkbox" id="show_ph_major" checked><label for="show_ph_major">pH major</label></div>
+                <div class="ck"><input type="checkbox" id="show_ph_minor" checked><label for="show_ph_minor">pH minor</label></div>
+                <div class="sep"></div>
+                <div class="fi fi-sm"><label>DIC Max</label><input type="number" id="dic_max" value="6.0" min="1" max="20" step="0.5"></div>
+                <div class="fi fi-sm"><label>Alk Max</label><input type="number" id="alk_max" value="6.0" min="1" max="20" step="0.5"></div>
+            </div>
+        </div>
+
+        <div class="loading-overlay" id="loading"><div class="loading-spinner">Computing...</div></div>
+        <div id="deffeyes-chart"></div>
+    </div>
+
+    <!-- Bottom: reagent + adjustment results -->
+    <div class="bottom-bar">
+        <span class="bl">Adjustment</span>
+        <div class="reagent-sel">
+            <label>R1</label>
+            <select id="reagent1">
+                <option value="nahco3" selected>NaHCO₃</option><option value="na2co3">Na₂CO₃</option>
+                <option value="naoh">NaOH</option><option value="caco3">CaCO₃</option>
+                <option value="caoh2">Ca(OH)₂</option><option value="cao">CaO</option>
+                <option value="plusCo2">+CO₂</option><option value="minusCo2">-CO₂</option>
+                <option value="hcl">HCl</option>
+            </select>
+            <label>R2</label>
+            <select id="reagent2">
+                <option value="nahco3">NaHCO₃</option><option value="na2co3">Na₂CO₃</option>
+                <option value="naoh" selected>NaOH</option><option value="caco3">CaCO₃</option>
+                <option value="caoh2">Ca(OH)₂</option><option value="cao">CaO</option>
+                <option value="plusCo2">+CO₂</option><option value="minusCo2">-CO₂</option>
+                <option value="hcl">HCl</option>
+            </select>
+        </div>
+        <div class="ck"><input type="checkbox" id="show_adjust" checked style="accent-color:#7c3aed"><label for="show_adjust">Path</label></div>
+        <div id="adjust-result" class="bv">—</div>
+    </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script>
+// ── Toolbar dropdown toggle ──
+let _openPanel = null;
+document.querySelectorAll('.tb-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const panelId = btn.dataset.panel;
+        const panel = document.getElementById(panelId);
+        if (_openPanel === panel) {
+            panel.classList.remove('open');
+            btn.classList.remove('active');
+            _openPanel = null;
+        } else {
+            document.querySelectorAll('.tb-dropdown').forEach(p => p.classList.remove('open'));
+            document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('active'));
+            panel.classList.add('open');
+            btn.classList.add('active');
+            _openPanel = panel;
+        }
+    });
+});
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (_openPanel && !e.target.closest('.toolbar')) {
+        _openPanel.classList.remove('open');
+        document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('active'));
+        _openPanel = null;
+    }
+});
+// Prevent dropdown from closing when clicking inside it
+document.querySelectorAll('.tb-dropdown').forEach(p => {
+    p.addEventListener('click', e => e.stopPropagation());
+});
+
+// ── State ──
+let _fullData=null, _lightData=null, _adjustData=null;
+let _debounceH=null, _debounceL=null, _debounceA=null, _chartCreated=false;
+let _currentSysId = 0; // 0 = unsaved new system
+const _csrf = '{{ csrf_token }}';
+
+const CL = {
+    phMajor:'#334155', phMinor:'#94a3b8', omega:'#0369a1',
+    uia:'#dc2626', uiaFill:'rgba(220,38,38,0.06)',
+    co2:'#d97706', co2Fill:'rgba(217,119,6,0.06)',
+    initial:'#dc2626', target:'#16a34a',
+    arrow:'#64748b', grid:'#e2e8f0',
+    adjust:'#7c3aed',
+};
+
+const HEAVY = new Set(['temp','salinity','calcium','dic_max','alk_max','volume']);
+
+// ── System save/load/delete ──
+function getFormState() {
+    return {
+        id: _currentSysId || undefined,
+        name: document.getElementById('sys-select').selectedOptions[0]?.text || 'System 1',
+        volume: v('volume'), temperature: v('temp'), salinity: v('salinity'),
+        initial_ph: v('initial_ph'), initial_alk: v('initial_alk'),
+        target_ph: v('target_ph'), target_alk: v('target_alk'),
+        tan: v('tan'), uia_limit: v('uia_limit'), co2_limit: v('co2_limit'),
+        calcium: v('calcium'), reagent1: v('reagent1'), reagent2: v('reagent2'),
+        show_uia: chk('show_uia'), show_co2: chk('show_co2'),
+        show_omega: chk('show_omega'), show_adjust: chk('show_adjust'),
+        show_ph_major: chk('show_ph_major'), show_ph_minor: chk('show_ph_minor'),
+        dic_max: v('dic_max'), alk_max: v('alk_max'),
+    };
+}
+
+function applyState(d) {
+    document.getElementById('volume').value = d.volume;
+    document.getElementById('temp').value = d.temperature;
+    document.getElementById('salinity').value = d.salinity;
+    document.getElementById('initial_ph').value = d.initial_ph;
+    document.getElementById('initial_alk').value = d.initial_alk;
+    document.getElementById('target_ph').value = d.target_ph;
+    document.getElementById('target_alk').value = d.target_alk;
+    document.getElementById('tan').value = d.tan;
+    document.getElementById('uia_limit').value = d.uia_limit;
+    document.getElementById('co2_limit').value = d.co2_limit;
+    document.getElementById('calcium').value = d.calcium;
+    document.getElementById('reagent1').value = d.reagent1;
+    document.getElementById('reagent2').value = d.reagent2;
+    document.getElementById('show_uia').checked = d.show_uia;
+    document.getElementById('show_co2').checked = d.show_co2;
+    document.getElementById('show_omega').checked = d.show_omega;
+    document.getElementById('show_adjust').checked = d.show_adjust;
+    document.getElementById('show_ph_major').checked = d.show_ph_major;
+    document.getElementById('show_ph_minor').checked = d.show_ph_minor;
+    document.getElementById('dic_max').value = d.dic_max;
+    document.getElementById('alk_max').value = d.alk_max;
+    fetchFull();
+}
+
+function saveSystem() {
+    const state = getFormState();
+    if (!_currentSysId) {
+        const name = prompt('System name:', `System ${document.getElementById('sys-select').options.length}`);
+        if (!name) return;
+        state.name = name;
+    }
+    fetch('/api/system/save/', {
+        method: 'POST', headers: {'Content-Type':'application/json','X-CSRFToken':_csrf},
+        body: JSON.stringify(state),
+    }).then(r=>r.json()).then(d => {
+        _currentSysId = d.id;
+        refreshSystemList(d.id);
+    }).catch(console.error);
+}
+
+function deleteSystem() {
+    if (!_currentSysId) return;
+    if (!confirm('Delete this system?')) return;
+    fetch(`/api/system/${_currentSysId}/delete/`, {
+        method:'POST', headers:{'X-CSRFToken':_csrf},
+    }).then(()=>{ _currentSysId=0; refreshSystemList(0); }).catch(console.error);
+}
+
+function loadSystem(id) {
+    if (!id || id==='0') { _currentSysId=0; return; }
+    fetch(`/api/system/${id}/load/`).then(r=>r.json()).then(d => {
+        _currentSysId = d.id;
+        applyState(d);
+    }).catch(console.error);
+}
+
+function refreshSystemList(selectId) {
+    fetch('/api/system/list/').then(r=>r.json()).then(d => {
+        const sel = document.getElementById('sys-select');
+        sel.innerHTML = '<option value="0">+ New System</option>';
+        d.systems.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.id; opt.textContent = s.name;
+            if (s.id === selectId) opt.selected = true;
+            sel.appendChild(opt);
+        });
+    }).catch(console.error);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.page input[type="number"]').forEach(el => {
+        const h = HEAVY.has(el.id) ? scheduleHeavy : scheduleLight;
+        el.addEventListener('change', h); el.addEventListener('input', h);
+    });
+    document.querySelectorAll('.page select').forEach(el => el.addEventListener('change', scheduleAdjust));
+    document.querySelectorAll('.page input[type="checkbox"]').forEach(el => el.addEventListener('change', () => reRender()));
+    document.getElementById('sys-select').addEventListener('change', (e) => loadSystem(e.target.value));
+    refreshSystemList(0);
+    fetchFull();
+});
+
+function scheduleHeavy() { clearTimeout(_debounceH); clearTimeout(_debounceL); _debounceH = setTimeout(fetchFull, 400); }
+function scheduleLight() { clearTimeout(_debounceL); _debounceL = setTimeout(() => { fetchLight(); fetchAdjust(); }, 150); }
+function scheduleAdjust() { clearTimeout(_debounceA); _debounceA = setTimeout(fetchAdjust, 150); }
+
+function v(id) { return document.getElementById(id).value; }
+function chk(id) { return document.getElementById(id).checked; }
+function cp() {
+    return { temp:v('temp'), salinity:v('salinity'), calcium:v('calcium'),
+        initial_ph:v('initial_ph'), initial_alk:v('initial_alk'),
+        target_ph:v('target_ph'), target_alk:v('target_alk'),
+        dic_max:v('dic_max'), alk_max:v('alk_max'), volume:v('volume'),
+        tan:v('tan'), uia_limit:v('uia_limit'), co2_limit:v('co2_limit') };
+}
+function uib() {
+    document.getElementById('info-params').textContent = `T ${v('temp')}°C · S ${v('salinity')} · Ca²⁺ ${v('calcium')}`;
+}
+
+function fetchFull() {
+    document.getElementById('loading').classList.add('active'); uib();
+    fetch(`/api/deffeyes-data/?${new URLSearchParams(cp())}`)
+        .then(r=>r.json()).then(data => {
+            _fullData = data;
+            _lightData = { initial_waypoint:data.initial_waypoint, target_waypoint:data.target_waypoint, uia_boundary:data.uia_boundary, co2_boundary:data.co2_boundary };
+            reRender(); document.getElementById('loading').classList.remove('active'); fetchAdjust();
+        }).catch(e => { console.error(e); document.getElementById('loading').classList.remove('active'); });
+}
+function fetchLight() {
+    if (!_fullData) return fetchFull(); uib();
+    fetch(`/api/deffeyes-light/?${new URLSearchParams(cp())}`)
+        .then(r=>r.json()).then(data => { _lightData=data; reRender(); }).catch(console.error);
+}
+function fetchAdjust() {
+    fetch(`/api/deffeyes-adjust/?${new URLSearchParams({...cp(), reagent1:v('reagent1'), reagent2:v('reagent2')})}`)
+        .then(r=>r.json()).then(data => { _adjustData=data; showAdj(data); reRender(); }).catch(console.error);
+}
+
+function showAdj(d) {
+    const el = document.getElementById('adjust-result');
+    if (!d || d.error) { el.textContent = '—'; el.className = 'bv'; return; }
+    if (!d.feasible) { el.textContent = 'Not reachable with selected reagents'; el.className = 'bv err'; return; }
+    el.className = 'bv';
+    el.innerHTML = `<b>${d.reagent1.cmpd}</b> ${fmtA(d.reagent1.amount,d.reagent1.unit)} · <b>${d.reagent2.cmpd}</b> ${fmtA(d.reagent2.amount,d.reagent2.unit)}`;
+}
+function fmtA(v,u) {
+    if(v>=1000) return `${(v/1000).toFixed(2)} kg`;
+    if(v>=1) return `${v.toFixed(2)} ${u}`;
+    if(v>=0.001) return `${(v*1000).toFixed(2)} m${u}`;
+    return `${v.toFixed(6)} ${u}`;
+}
+
+function reRender() {
+    if (!_fullData || !_lightData) return;
+    const dicMax=parseFloat(v('dic_max')), alkMax=parseFloat(v('alk_max'));
+    const filt = pts => pts.filter(p => p.y>=-0.5 && p.y<=alkMax*1.05 && p.x>=0 && p.x<=dicMax);
+    const d=_fullData, l=_lightData, E={x:[],y:[]};
+
+    let co2F={...E,fill:'toself',fillcolor:CL.co2Fill,line:{width:0},showlegend:false,hoverinfo:'skip'};
+    let co2L={...E,mode:'lines',line:{color:CL.co2,width:2,dash:'dashdot'},name:`CO₂ ${v('co2_limit')}`,showlegend:true,hovertemplate:'CO₂<br>DIC:%{x:.2f}<br>Alk:%{y:.2f}<extra></extra>'};
+    if(chk('show_co2')&&l.co2_boundary&&l.co2_boundary.points){const p=filt(l.co2_boundary.points);if(p.length>2){co2F={...co2F,x:[...p.map(q=>q.x),p[p.length-1].x,p[0].x],y:[...p.map(q=>q.y),0,0]};co2L={...co2L,x:p.map(q=>q.x),y:p.map(q=>q.y)};}}
+
+    let uF={...E,fill:'toself',fillcolor:CL.uiaFill,line:{width:0},showlegend:false,hoverinfo:'skip'};
+    let uL={...E,mode:'lines',line:{color:CL.uia,width:2,dash:'dashdot'},name:'NH₃',showlegend:true,hovertemplate:'NH₃<br>DIC:%{x:.2f}<br>Alk:%{y:.2f}<extra></extra>'};
+    if(chk('show_uia')&&l.uia_boundary&&l.uia_boundary.points){const p=filt(l.uia_boundary.points);if(p.length>2){uF={...uF,x:[...p.map(q=>q.x),p[p.length-1].x,p[0].x],y:[...p.map(q=>q.y),alkMax,alkMax]};uL={...uL,x:p.map(q=>q.x),y:p.map(q=>q.y),name:`NH₃ pH${l.uia_boundary.critical_ph}`};}}
+
+    const T=[co2F,co2L,uF,uL];
+
+    d.minor_isopleths.forEach(iso=>{if(chk('show_ph_minor')){const p=filt(iso.points);T.push({x:p.map(q=>q.x),y:p.map(q=>q.y),mode:'lines',line:{color:CL.phMinor,width:.7,dash:'dot'},showlegend:false,hovertemplate:`pH ${iso.ph}<br>DIC:%{x:.2f}<extra></extra>`});}else T.push({...E,mode:'lines',line:{color:CL.phMinor,width:.7},showlegend:false,hoverinfo:'skip'});});
+    d.major_isopleths.forEach(iso=>{if(chk('show_ph_major')){const p=filt(iso.points);T.push({x:p.map(q=>q.x),y:p.map(q=>q.y),mode:'lines',line:{color:CL.phMajor,width:1.2},showlegend:false,hovertemplate:`pH ${iso.ph}<br>DIC:%{x:.2f}<extra></extra>`});}else T.push({...E,mode:'lines',line:{color:CL.phMajor,width:1.2},showlegend:false,hoverinfo:'skip'});});
+
+    if(chk('show_omega')&&d.omega_boundary.length>0){const p=filt(d.omega_boundary);T.push({x:p.map(q=>q.x),y:p.map(q=>q.y),mode:'lines',line:{color:CL.omega,width:2.5,dash:'dash'},name:'Ω=1',showlegend:true,hovertemplate:'Ω=1<br>DIC:%{x:.2f}<br>Alk:%{y:.2f}<extra></extra>'});}
+    else T.push({...E,mode:'lines',line:{color:CL.omega,width:2.5},showlegend:false,hoverinfo:'skip'});
+
+    T.push({x:[l.initial_waypoint.dic,l.target_waypoint.dic],y:[l.initial_waypoint.alk,l.target_waypoint.alk],mode:'lines',line:{color:CL.arrow,width:1.5,dash:'dash'},showlegend:false,hoverinfo:'skip'});
+    T.push({x:[l.initial_waypoint.dic],y:[l.initial_waypoint.alk],mode:'markers+text',marker:{color:CL.initial,size:9,symbol:'circle',line:{color:'#fff',width:1.5}},text:[`pH${l.initial_waypoint.ph}`],textposition:'top right',textfont:{color:CL.initial,size:9},name:'Initial',showlegend:true,hovertemplate:`Initial<br>pH:${l.initial_waypoint.ph}<br>DIC:%{x:.2f}<br>Alk:%{y:.2f}<extra></extra>`});
+    T.push({x:[l.target_waypoint.dic],y:[l.target_waypoint.alk],mode:'markers+text',marker:{color:CL.target,size:9,symbol:'diamond',line:{color:'#fff',width:1.5}},text:[`pH${l.target_waypoint.ph}`],textposition:'top right',textfont:{color:CL.target,size:9},name:'Target',showlegend:true,hovertemplate:`Target<br>pH:${l.target_waypoint.ph}<br>DIC:%{x:.2f}<br>Alk:%{y:.2f}<extra></extra>`});
+
+    const adj=_adjustData;
+    if(chk('show_adjust')&&adj&&adj.feasible&&adj.adjustment_point){const ap=adj.adjustment_point;T.push({x:[l.initial_waypoint.dic,ap.dic,l.target_waypoint.dic],y:[l.initial_waypoint.alk,ap.alk,l.target_waypoint.alk],mode:'lines+markers',line:{color:CL.adjust,width:2.5},marker:{color:CL.adjust,size:6,symbol:'star',line:{color:'#fff',width:1}},name:'Adj. Path',showlegend:true,hovertemplate:'Adj<br>DIC:%{x:.2f}<br>Alk:%{y:.2f}<extra></extra>'});}
+    else T.push({...E,mode:'lines',line:{color:CL.adjust,width:2.5},showlegend:false,hoverinfo:'skip'});
+
+    // Annotations
+    const A=[];
+    if(chk('show_ph_major')) d.major_isopleths.forEach(iso=>{const p=filt(iso.points);if(p.length>5){const pt=p[Math.floor(p.length*.7)];A.push({x:pt.x,y:pt.y,text:`pH ${iso.ph}`,showarrow:false,font:{color:'#475569',size:9},bgcolor:'rgba(255,255,255,.9)',borderpad:2});}});
+    if(chk('show_omega')&&d.omega_boundary.length>10){const p=filt(d.omega_boundary);const m=p[Math.floor(p.length*.5)];if(m){A.push({x:m.x,y:m.y+alkMax*.02,text:'Ω>1',showarrow:false,font:{color:CL.omega,size:8}});A.push({x:m.x,y:m.y-alkMax*.02,text:'Ω<1',showarrow:false,font:{color:'#7dd3fc',size:8}});}}
+
+    const layout={
+        xaxis:{title:{text:'DIC (mmol/kg)',font:{color:'#475569',size:11}},range:[0,dicMax],gridcolor:CL.grid,zerolinecolor:CL.grid,tickfont:{color:'#64748b',size:9},linecolor:'#cbd5e1',mirror:true,showline:true},
+        yaxis:{title:{text:'Alkalinity (meq/L)',font:{color:'#475569',size:11}},range:[0,alkMax],gridcolor:CL.grid,zerolinecolor:CL.grid,tickfont:{color:'#64748b',size:9},linecolor:'#cbd5e1',mirror:true,showline:true},
+        plot_bgcolor:'#fff',paper_bgcolor:'#fff',
+        margin:{t:10,r:10,b:40,l:45},
+        legend:{x:.01,y:.99,bgcolor:'rgba(255,255,255,.95)',bordercolor:'#e2e8f0',borderwidth:1,font:{color:'#475569',size:9}},
+        annotations:A, font:{family:'Segoe UI,system-ui,sans-serif'},
+    };
+    const cfg={responsive:true,displayModeBar:true,modeBarButtonsToRemove:['lasso2d','select2d'],displaylogo:false};
+    if(_chartCreated) Plotly.react('deffeyes-chart',T,layout,cfg);
+    else { Plotly.newPlot('deffeyes-chart',T,layout,cfg); _chartCreated=true; }
+}
+</script>
+{% endblock %}

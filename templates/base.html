@@ -15,8 +15,8 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0a1628 0%, #0d2847 30%, #0a3d6b 60%, #065c8a 100%);
-            color: #e0e8f0;
+            background: #f5f7fa;
+            color: #1a2332;
         }
 
         .login-container {
@@ -25,17 +25,17 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0f4f8 50%, #e3ecf5 100%);
         }
 
         .login-card {
-            background: rgba(13, 25, 48, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(6, 147, 227, 0.2);
+            background: #ffffff;
+            border: 1px solid #dde4ed;
             border-radius: 16px;
             padding: 48px 40px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(6, 147, 227, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
         }
 
         .logo-section {
@@ -53,19 +53,19 @@
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            box-shadow: 0 4px 20px rgba(6, 147, 227, 0.4);
+            box-shadow: 0 4px 16px rgba(6, 147, 227, 0.25);
         }
 
         .logo-title {
             font-size: 24px;
             font-weight: 700;
-            color: #ffffff;
+            color: #1a2332;
             letter-spacing: 0.5px;
         }
 
         .logo-subtitle {
             font-size: 13px;
-            color: #7a8ba3;
+            color: #6b7d93;
             margin-top: 4px;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -79,7 +79,7 @@
             display: block;
             font-size: 13px;
             font-weight: 600;
-            color: #8899aa;
+            color: #4a5568;
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -88,10 +88,10 @@
         .form-group input {
             width: 100%;
             padding: 14px 16px;
-            background: rgba(6, 30, 60, 0.6);
-            border: 1px solid rgba(6, 147, 227, 0.25);
+            background: #f7f9fc;
+            border: 1px solid #d0d7e2;
             border-radius: 10px;
-            color: #e0e8f0;
+            color: #1a2332;
             font-size: 15px;
             transition: all 0.3s ease;
             outline: none;
@@ -99,12 +99,12 @@
 
         .form-group input:focus {
             border-color: #0693e3;
-            box-shadow: 0 0 0 3px rgba(6, 147, 227, 0.15);
-            background: rgba(6, 30, 60, 0.8);
+            box-shadow: 0 0 0 3px rgba(6, 147, 227, 0.12);
+            background: #fff;
         }
 
         .form-group input::placeholder {
-            color: #4a5a6a;
+            color: #9aa5b4;
         }
 
         .btn-login {
@@ -124,7 +124,7 @@
 
         .btn-login:hover {
             background: linear-gradient(135deg, #0078c8, #005fa3);
-            box-shadow: 0 4px 20px rgba(6, 147, 227, 0.4);
+            box-shadow: 0 4px 16px rgba(6, 147, 227, 0.3);
             transform: translateY(-1px);
         }
 
@@ -133,9 +133,9 @@
         }
 
         .error-message {
-            background: rgba(220, 53, 69, 0.15);
-            border: 1px solid rgba(220, 53, 69, 0.3);
-            color: #ff6b7a;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
             padding: 12px 16px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -143,21 +143,10 @@
             text-align: center;
         }
 
-        .water-decoration {
-            position: fixed;
-            bottom: -50px;
-            left: 0;
-            right: 0;
-            height: 200px;
-            background: radial-gradient(ellipse at center bottom, rgba(6, 147, 227, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
         {% block extra_css %}{% endblock %}
     </style>
 </head>
 <body>
     {% block content %}{% endblock %}
-    <div class="water-decoration"></div>
 </body>
 </html>

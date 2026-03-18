@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aqua Intel — Investor Presentation 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Inter',system-ui,sans-serif;background:#060e1a;}
+
+/* ═══ SLIDE ENGINE ═══ */
+.deck{position:relative;width:100%;height:100%;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:70px 100px;
+  opacity:0;visibility:hidden;transform:translateX(50px) scale(0.98);
+  transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1),visibility 0s .55s;
+  will-change:transform,opacity;}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0) scale(1);transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1),visibility 0s;}
+.slide.exit-left{opacity:0;transform:translateX(-50px) scale(0.98);}
+.slide.exit-right{opacity:0;transform:translateX(50px) scale(0.98);}
+
+/* ═══ BACKGROUNDS ═══ */
+.slide{background:linear-gradient(160deg,#040a14 0%,#0a1a30 40%,#0c2744 100%);color:#e0e8f0;}
+.slide::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(14,165,233,0.05) 0%,transparent 70%);
+  top:-15%;right:-10%;animation:floatOrb 25s ease-in-out infinite alternate;pointer-events:none;}
+.slide::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(56,189,248,0.03) 0%,transparent 70%);
+  bottom:-10%;left:-5%;animation:floatOrb 30s ease-in-out 5s infinite alternate-reverse;pointer-events:none;}
+/* Theme variants */
+.slide.white{background:#f8fafb;color:#1e293b;}
+.slide.white::before{background:radial-gradient(circle,rgba(14,165,233,0.03) 0%,transparent 70%);}
+.slide.white::after{background:radial-gradient(circle,rgba(56,189,248,0.02) 0%,transparent 70%);}
+
+.slide.warm{background:linear-gradient(160deg,#1a0a0a 0%,#2d1215 40%,#3d1a1e 100%);color:#f0e0e0;}
+.slide.warm::before{background:radial-gradient(circle,rgba(239,68,68,0.05) 0%,transparent 70%);}
+.slide.warm .sub{color:#b08080;} .slide.warm .card{background:rgba(239,68,68,0.03);border-color:rgba(239,68,68,0.1);}
+.slide.warm .card h3{color:#fca5a5;} .slide.warm .card p{color:#c09090;} .slide.warm .sh .brand{color:#804040;}
+.slide.warm h2::after{background:linear-gradient(90deg,transparent,#ef4444,transparent)!important;}
+
+.slide.teal{background:linear-gradient(160deg,#04120e 0%,#0a2520 40%,#0c3530 100%);color:#d0f0ea;}
+.slide.teal::before{background:radial-gradient(circle,rgba(20,184,166,0.05) 0%,transparent 70%);}
+.slide.teal .sub{color:#5aaa98;} .slide.teal .stat .n{background:linear-gradient(135deg,#14b8a6,#5eead4);-webkit-background-clip:text;background-clip:text;}
+.slide.teal .card{background:rgba(20,184,166,0.03);border-color:rgba(20,184,166,0.1);border-left-color:rgba(20,184,166,0.3);}
+.slide.teal .card h3{color:#5eead4;} .slide.teal .card p{color:#6aaa9a;} .slide.teal .sh .brand{color:#2d7060;}
+.slide.teal h2::after{background:linear-gradient(90deg,transparent,#14b8a6,transparent)!important;}
+
+.slide.purple{background:linear-gradient(160deg,#0e0818 0%,#1a1030 40%,#251848 100%);color:#e0d8f0;}
+.slide.purple::before{background:radial-gradient(circle,rgba(139,92,246,0.05) 0%,transparent 70%);}
+.slide.purple .sub{color:#8a7aaa;} .slide.purple .stat .n{background:linear-gradient(135deg,#a78bfa,#c4b5fd);-webkit-background-clip:text;background-clip:text;}
+.slide.purple .card{background:rgba(139,92,246,0.03);border-color:rgba(139,92,246,0.1);border-left-color:rgba(139,92,246,0.3);}
+.slide.purple .card h3{color:#c4b5fd;} .slide.purple .card p{color:#8a7aaa;} .slide.purple .sh .brand{color:#5a4080;}
+.slide.purple h2::after{background:linear-gradient(90deg,transparent,#8b5cf6,transparent)!important;}
+
+.slide.gold{background:linear-gradient(160deg,#141008 0%,#2a2010 40%,#3d3018 100%);color:#f0e8d0;}
+.slide.gold::before{background:radial-gradient(circle,rgba(245,158,11,0.05) 0%,transparent 70%);}
+.slide.gold .sub{color:#aa9060;} .slide.gold .stat .n{background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;background-clip:text;}
+.slide.gold .card{background:rgba(245,158,11,0.03);border-color:rgba(245,158,11,0.1);border-left-color:rgba(245,158,11,0.3);}
+.slide.gold .card h3{color:#fbbf24;} .slide.gold .card p{color:#aa9060;} .slide.gold .sh .brand{color:#806020;}
+.slide.gold h2::after{background:linear-gradient(90deg,transparent,#f59e0b,transparent)!important;}
+
+@keyframes floatOrb{
+  0%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(-30px,25px) scale(1.08);}
+  66%{transform:translate(20px,-15px) scale(0.95);}
+  100%{transform:translate(-10px,10px) scale(1.03);}
+}
+
+/* ═══ TYPOGRAPHY ═══ */
+.sh{position:absolute;top:0;left:0;right:0;padding:22px 50px;display:flex;justify-content:space-between;align-items:center;z-index:2;}
+.sh .brand{font-size:9px;color:#2d5a80;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;}
+.slide.white .sh .brand{color:#0369a1;}
+.sf{position:absolute;bottom:0;left:0;right:0;padding:16px 50px;display:flex;justify-content:space-between;font-size:9px;color:#1a3050;z-index:2;}
+
+h1{font-size:72px;font-weight:900;line-height:1.0;letter-spacing:-2.5px;margin-bottom:16px;z-index:1;text-shadow:0 0 80px rgba(14,165,233,0.2);}
+h2{font-size:44px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:10px;z-index:1;text-shadow:0 2px 40px rgba(14,165,233,0.1);}
+.sub{font-size:19px;color:#5a90bc;margin-bottom:36px;font-weight:400;z-index:1;}
+.slide.white .sub{color:#64748b;}
+.kicker{font-size:13px;color:#2d6a94;letter-spacing:6px;text-transform:uppercase;font-weight:700;margin-bottom:24px;}
+p{font-size:15px;line-height:1.7;color:#7a9cba;max-width:850px;z-index:1;}
+.slide.white p{color:#475569;}
+.grad{background:linear-gradient(135deg,#0ea5e9,#38bdf8,#7dd3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes cardEnter{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes textReveal{from{clip-path:inset(0 100% 0 0);opacity:.2;}to{clip-path:inset(0 0% 0 0);opacity:1;}}
+@keyframes lineExpand{from{width:0;opacity:0;}to{width:80px;opacity:1;}}
+@keyframes barGrow{from{max-width:0%;}to{max-width:100%;}}
+@keyframes enterLeft{from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:translateX(0);}}
+@keyframes enterRight{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
+@keyframes dangerPulse{0%,100%{box-shadow:inset 0 0 0 rgba(239,68,68,0);}50%{box-shadow:inset 0 0 20px rgba(239,68,68,0.04);}}
+@keyframes phaseNum{0%{transform:scale(0);opacity:0;}60%{transform:scale(1.15);}100%{transform:scale(1);opacity:1;}}
+@keyframes numberGlow{0%,100%{text-shadow:none;}50%{text-shadow:0 0 20px rgba(14,165,233,0.3);}}
+
+/* Element entrance animations */
+.slide.active h2{animation:textReveal .7s cubic-bezier(.25,.46,.45,.94) .1s both;}
+.slide.active .sub{animation:fadeUp .5s ease .25s both;}
+.slide.active .kicker{animation:fadeUp .5s ease .05s both;}
+.slide.active .badge{animation:fadeUp .4s ease .6s both;}
+.slide.active .card{animation:cardEnter .45s cubic-bezier(.25,.46,.45,.94) both;}
+.slide.active .stat{animation:cardEnter .45s cubic-bezier(.25,.46,.45,.94) both;}
+.slide.active .rm{animation:cardEnter .45s cubic-bezier(.25,.46,.45,.94) both;}
+.slide.active .phase{animation:cardEnter .45s cubic-bezier(.25,.46,.45,.94) both;}
+.slide.active .col.bad{animation:enterLeft .6s ease .2s both;}
+.slide.active .col.good{animation:enterRight .6s ease .35s both;}
+.slide.active .col li{animation:fadeUp .35s ease both;}
+.slide.active .phase .num{animation:phaseNum .5s cubic-bezier(.34,1.56,.64,1) both;}
+.slide.active .alloc{animation:barGrow 1s cubic-bezier(.25,.46,.45,.94) .3s both;overflow:hidden;}
+.slide.active .card.red{animation:cardEnter .45s ease both,dangerPulse 3s ease-in-out 1.5s infinite;}
+
+/* H2 underline */
+.slide.active h2::after{content:'';display:block;height:2px;background:linear-gradient(90deg,transparent,#0ea5e9,transparent);margin:12px auto 0;animation:lineExpand .8s ease .4s both;}
+
+/* ═══ STATS ═══ */
+.stats{display:flex;gap:56px;margin:32px 0;flex-wrap:wrap;justify-content:center;z-index:1;}
+.stat{text-align:center;}
+.stat .n{font-size:56px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#0ea5e9,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px;}
+.stat .l{font-size:11px;color:#4a7ea8;margin-top:6px;line-height:1.45;max-width:180px;}
+.stat .src{font-size:9px;color:#1e3a5a;margin-top:4px;}
+
+/* ═══ CARDS ═══ */
+.cards{display:grid;gap:14px;margin:24px 0;width:100%;max-width:1100px;z-index:1;}
+.c2{grid-template-columns:1fr 1fr;} .c3{grid-template-columns:1fr 1fr 1fr;} .c4{grid-template-columns:1fr 1fr;}
+.card{background:rgba(14,165,233,0.03);border:1px solid rgba(14,165,233,0.1);border-radius:12px;padding:20px 22px;border-left:3px solid rgba(14,165,233,0.3);
+  transition:border-color .3s,background .3s,box-shadow .3s,transform .3s;}
+.card:hover{border-color:rgba(14,165,233,0.4);background:rgba(14,165,233,0.06);box-shadow:0 0 24px rgba(14,165,233,0.06);transform:translateY(-2px);}
+.slide.white .card{background:#fff;border-color:#e2e8f0;border-left-color:#0ea5e9;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.card h3{font-size:15px;font-weight:700;color:#38bdf8;margin-bottom:5px;}
+.slide.white .card h3{color:#0369a1;}
+.card p{font-size:13px;color:#5a8aaa;line-height:1.65;max-width:none;}
+.slide.white .card p{color:#475569;}
+.card.red{border-left-color:#ef4444;} .card.red h3{color:#f87171;}
+.card.red:hover{box-shadow:0 0 20px rgba(239,68,68,0.06);}
+.card.amber{border-left-color:#f59e0b;} .card.amber h3{color:#fbbf24;}
+.card.green{border-left-color:#10b981;} .card.green h3{color:#34d399;}
+.card.green:hover{box-shadow:0 0 20px rgba(16,185,129,0.06);}
+.card.purple{border-left-color:#8b5cf6;} .card.purple h3{color:#a78bfa;}
+
+/* ═══ COMPARE ═══ */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin:28px 0;max-width:950px;width:100%;z-index:1;}
+.col{padding:24px;border-radius:12px;}
+.col.bad{background:rgba(100,116,139,0.06);border:1px solid rgba(100,116,139,0.1);}
+.col.good{background:rgba(14,165,233,0.06);border:1px solid rgba(14,165,233,0.15);}
+.col h3{font-size:13px;font-weight:800;margin-bottom:14px;letter-spacing:1.5px;text-transform:uppercase;}
+.col.bad h3{color:#64748b;} .col.good h3{color:#0ea5e9;}
+.col ul{list-style:none;padding:0;}
+.col li{font-size:13px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);color:#7a9cba;display:flex;align-items:flex-start;gap:10px;}
+.col.bad li::before{content:'✕';color:#64748b;font-size:11px;flex-shrink:0;}
+.col.good li::before{content:'✓';color:#0ea5e9;font-weight:700;font-size:13px;flex-shrink:0;}
+.bottom-note{margin-top:20px;font-size:12px;color:#3d6a94;font-style:italic;max-width:800px;text-align:center;z-index:1;padding:14px 24px;border:1px solid rgba(14,165,233,0.1);border-radius:10px;background:rgba(14,165,233,0.03);}
+
+/* ═══ ROADMAP ═══ */
+.roadmap{display:flex;gap:12px;margin:28px 0;width:100%;max-width:1100px;z-index:1;position:relative;}
+.roadmap::before{content:'';position:absolute;top:0;left:4%;right:4%;height:3px;background:linear-gradient(90deg,#0ea5e9,#38bdf8,#7dd3fc);border-radius:2px;z-index:2;}
+.rm{flex:1;background:rgba(14,165,233,0.03);border:1px solid rgba(14,165,233,0.1);border-radius:12px;padding:22px 20px;border-top:3px solid transparent;margin-top:3px;}
+.rm .period{font-size:10px;color:#0ea5e9;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.rm h3{font-size:15px;color:#e0e8f0;margin-bottom:8px;font-weight:700;}
+.rm p{font-size:11px;color:#5a8aaa;line-height:1.6;max-width:none;}
+
+/* ═══ PHASES ═══ */
+.phases{display:flex;gap:10px;margin:16px 0;width:100%;max-width:1100px;z-index:1;}
+.phase{flex:1;background:rgba(14,165,233,0.03);border:1px solid rgba(14,165,233,0.1);border-radius:10px;padding:14px 16px;}
+.phase .num{font-size:28px;font-weight:900;background:linear-gradient(135deg,#0ea5e9,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;}
+.phase h3{font-size:12px;color:#e0e8f0;margin-bottom:4px;font-weight:700;}
+.phase p{font-size:10.5px;color:#5a8aaa;line-height:1.5;max-width:none;}
+
+/* ═══ ALLOC BAR ═══ */
+.alloc{display:flex;gap:4px;margin:24px 0;width:100%;max-width:900px;height:42px;border-radius:10px;overflow:hidden;z-index:1;}
+.alloc div{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;letter-spacing:0.5px;}
+.alloc .a1{flex:50;background:linear-gradient(135deg,#0ea5e9,#0284c7);}
+.alloc .a2{flex:25;background:linear-gradient(135deg,#06b6d4,#0891b2);}
+.alloc .a3{flex:15;background:#0e7490;}
+.alloc .a4{flex:10;background:#155e75;}
+
+/* ═══ BADGE ═══ */
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;margin:6px 4px;}
+.badge.gov{background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.25);color:#38bdf8;}
+.badge.test{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#34d399;}
+
+/* ═══ DIVIDER ═══ */
+.divider{width:60px;height:3px;background:linear-gradient(90deg,#0ea5e9,transparent);margin:16px 0;border-radius:2px;}
+
+/* ═══ CHART ═══ */
+.chart-box{width:100%;max-width:950px;height:420px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;margin:16px 0;position:relative;z-index:1;box-shadow:0 4px 24px rgba(0,0,0,0.08);overflow:hidden;}
+.chart-box .cl{position:absolute;top:8px;left:12px;font-size:10px;font-weight:700;color:#0369a1;background:rgba(255,255,255,.95);padding:3px 10px;border-radius:4px;border:1px solid #bae6fd;z-index:5;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:1000px;height:380px;z-index:1;}
+.chart-grid .chart-box{height:100%;margin:0;max-width:none;}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress{position:fixed;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#0ea5e9,#38bdf8);transition:width .5s cubic-bezier(.4,0,.2,1);z-index:9999;}
+
+/* ═══ SECTION DOTS ═══ */
+.section-dots{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;gap:6px;align-items:center;}
+.section-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.2);transition:all .3s;}
+.section-dots .dot.active{background:#0ea5e9;border-color:#0ea5e9;transform:scale(1.3);}
+.section-dots .dot-label{font-size:8px;color:#2d5a80;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-left:6px;}
+
+/* ═══ TIMER OVERLAY ═══ */
+.timer-overlay{position:fixed;top:12px;right:60px;z-index:9999;background:rgba(4,10,20,.85);border:1px solid rgba(14,165,233,.2);border-radius:8px;padding:6px 14px;font-size:11px;color:#38bdf8;font-weight:600;font-family:'Inter',monospace;display:none;backdrop-filter:blur(8px);}
+.timer-overlay.show{display:block;}
+
+/* ═══ NAV ═══ */
+.nav-a{position:fixed;top:50%;transform:translateY(-50%);z-index:9999;width:48px;height:90px;display:flex;align-items:center;justify-content:center;background:rgba(10,22,40,.4);border:1px solid rgba(14,165,233,.1);cursor:pointer;transition:all .2s;text-decoration:none;backdrop-filter:blur(10px);}
+.nav-a:hover{background:rgba(14,165,233,.2);border-color:rgba(14,165,233,.3);}
+.nav-a svg{stroke:#4a7ea8;transition:stroke .2s;}
+.nav-a:hover svg{stroke:#fff;}
+.nav-a.left{left:0;border-radius:0 10px 10px 0;border-left:none;}
+.nav-a.right{right:0;border-radius:10px 0 0 10px;border-right:none;}
+.counter{position:fixed;bottom:12px;right:44px;z-index:9999;font-size:11px;color:#1e3a5a;font-weight:600;font-family:'Inter',monospace;}
+
+.center{text-align:center;display:flex;flex-direction:column;align-items:center;}
+.z1{position:relative;z-index:1;}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 1. TITLE -->
+<div class="slide active center">
+  <div class="kicker">M A R I T I M E &ensp; | &ensp; L A N D B A S E D &ensp; | &ensp; E N V I R O N M E N T A L</div>
+  <h1 class="grad">AQUA INTEL</h1>
+  <p style="font-size:21px;color:#4a7ea8;margin-bottom:12px;">Water Quality Management Intelligence</p>
+  <div class="divider" style="margin:20px auto;"></div>
+  <div style="font-size:14px;color:#2d5a80;line-height:2;">Noras Watertech AS<br>Moreneveien 1, 3158 Andebu, Norway<br>+47 911 77 787</div>
+  <div style="margin-top:32px;display:flex;gap:12px;">
+    <span class="badge gov">Norwegian Government Co-Funded</span>
+    <span class="badge test">Validated at 100–120 kg/m³</span>
+  </div>
+  <div style="margin-top:20px;font-size:10px;color:#1a3050;">Investor Presentation &bull; 2026</div>
+</div>
+
+<!-- 2. THE PROBLEM -->
+<div class="slide warm center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>THE PROBLEM</h2>
+  <div class="sub">A $15.5 Billion Crisis the Industry Cannot Afford to Ignore</div>
+  <div class="stats">
+    <div class="stat"><div class="n" data-target="865M">0</div><div class="l">farmed salmon died globally<br>2012–2022</div><div class="src">Nature Scientific Reports, 2024</div></div>
+    <div class="stat"><div class="n" data-target="$15.5B">0</div><div class="l">in mortality costs across<br>4 nations (2013–2019)</div><div class="src">Dead Loss Report — Just Economics</div></div>
+    <div class="stat"><div class="n" data-target="100M+">0</div><div class="l">fish deaths in Norway alone<br>in 2023 (record year)</div><div class="src">Norwegian Directorate of Fisheries</div></div>
+  </div>
+  <div class="cards c3" style="max-width:1050px;">
+    <div class="card red"><h3>Parameter Blindness</h3><p>Current systems show pH, NH₃, CO₂ in isolation. But these interact — adjusting one shifts others into danger. Operators can't see relationships.</p></div>
+    <div class="card amber"><h3>Multi-System Chaos</h3><p>Modern RAS facilities run 2–8 independent loops. Each has its own chemistry. Managing 4 systems isn't 4x harder — it's exponentially harder.</p></div>
+    <div class="card purple"><h3>Workforce Crisis</h3><p>RAS facilities are in remote locations. Finding qualified water chemistry operators is nearly impossible. When one leaves, all knowledge goes.</p></div>
+  </div>
+</div>
+
+<!-- 3. COST OF FAILURE -->
+<div class="slide warm center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>THE COST OF FAILURE</h2>
+  <div class="sub">Every Major RAS Facility Has Experienced Catastrophic Water Quality Events</div>
+  <div class="cards c2" style="max-width:1000px;">
+    <div class="card red"><h3>Atlantic Sapphire — Denmark & Florida</h3><p>5+ mass mortality events (2020–2023). 500K fish killed by toxic gas in single incident. $167M net loss in 2024. Share price crashed 80% in one day.</p></div>
+    <div class="card red"><h3>Sustainable Blue — Nova Scotia</h3><p>CO₂ stripper collapsed Nov 2023. 100,000 market-ready salmon dead. $3.7M loss. Supply halted for 7 months.</p></div>
+    <div class="card red"><h3>Proximar Seafood — Japan</h3><p>Automated valve malfunction caused oxygen depletion. 170,000 fish killed. Multiple prior biofilter incidents.</p></div>
+    <div class="card red"><h3>AquaBounty — USA</h3><p>Costs ballooned from $200M to $375M. Ceased all operations Dec 2024. Sold all facilities. CEO stepped down.</p></div>
+  </div>
+  <div class="sf"><span>Source: SalmonBusiness, SeafoodSource, The Fish Site, CBC News (2020–2025)</span></div>
+</div>
+
+<!-- 4. LIVE DEMO — 1 System -->
+<div class="slide white center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Live Demo</span></div>
+  <h2 style="color:#0369a1;font-size:28px;">Managing 1 System — Simple</h2>
+  <div class="sub" style="font-size:14px;">All parameters and their interactions in one chart. Clear path to target.</div>
+  <div class="chart-box" id="demo-1"><div class="cl">System 1 — Arctic Charr</div></div>
+</div>
+
+<!-- 5. LIVE DEMO — 4 Systems -->
+<div class="slide white center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Live Demo</span></div>
+  <h2 style="color:#0369a1;font-size:28px;">Now Manage 4 Systems Simultaneously</h2>
+  <div class="sub" style="font-size:14px;">Each system has independent water chemistry. Can you keep all four safe?</div>
+  <div class="chart-grid">
+    <div class="chart-box" id="demo-4a"><div class="cl">System 1</div></div>
+    <div class="chart-box" id="demo-4b"><div class="cl">System 2</div></div>
+    <div class="chart-box" id="demo-4c"><div class="cl">System 3</div></div>
+    <div class="chart-box" id="demo-4d"><div class="cl">System 4</div></div>
+  </div>
+</div>
+
+<!-- 6. THE SOLUTION -->
+<div class="slide teal center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>THE SOLUTION</h2>
+  <div class="sub">One Platform to Monitor, Calculate, and Decide — in Real Time</div>
+  <div class="cards c2" style="max-width:1000px;">
+    <div class="card" style="grid-row:span 2;"><h3>What Is Aqua Intel?</h3><p>A proprietary water quality management platform built on <strong style="color:#38bdf8;">60+ scientifically validated</strong> water chemistry functions.<br><br>Connects to any sensor infrastructure, monitors all parameters and their interactions across multiple RAS systems.<br><br><strong style="color:#38bdf8;">Operators see:</strong><br>&bull; Current water quality status<br>&bull; Safe/toxic zones for their species<br>&bull; Nearest optimal target point<br>&bull; 1–6 actionable management recipes</p></div>
+    <div class="card"><h3>Continuous Monitoring</h3><p>Connects to any sensor. Tracks all parameters and chemical interdependencies in real time across every RAS loop.</p></div>
+    <div class="card"><h3>Intelligent Calculation</h3><p>Automatically computes ionized/un-ionized forms of NH₃ and CO₂. Eliminates manual water chemistry calculations.</p></div>
+  </div>
+</div>
+
+<!-- 7. COMPETITIVE LANDSCAPE -->
+<div class="slide center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>COMPETITIVE LANDSCAPE</h2>
+  <div class="sub">"Why Doesn't This Already Exist?"</div>
+  <div class="compare">
+    <div class="col bad"><h3>What Others Do</h3><ul>
+      <li>Monitor individual parameters in isolation</li>
+      <li>Display raw sensor data on dashboards</li>
+      <li>Set simple threshold alarms (high/low)</li>
+      <li>Require manual interpretation by operators</li>
+      <li>No understanding of chemical interactions</li>
+      <li>No actionable recommendations</li>
+    </ul></div>
+    <div class="col good"><h3>What Aqua Intel Does</h3><ul>
+      <li>Models the full complexity of water chemistry</li>
+      <li>Calculates derived toxic forms in real time</li>
+      <li>Maps safe/toxic zones per species and life stage</li>
+      <li>Generates optimum management recipes</li>
+      <li>Manages 2–8+ systems from one dashboard</li>
+      <li>60+ scientific functions powering the platform</li>
+    </ul></div>
+  </div>
+  <div class="bottom-note">Only 30–40% of existing facilities use continuous automated monitoring. IoT-based systems reduce mortality by 34%. The gap is massive — and Aqua Intel fills it.</div>
+</div>
+
+<!-- 8. VALUE PROPOSITION -->
+<div class="slide center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>VALUE PROPOSITION</h2>
+  <div class="sub">Measurable Impact for RAS Operators</div>
+  <div class="stats">
+    <div class="stat"><div class="n" data-target="39%">0</div><div class="l">improvement in feed efficiency<br>with IoT monitoring</div></div>
+    <div class="stat"><div class="n" data-target="34%">0</div><div class="l">reduction in mortality<br>with automated monitoring</div></div>
+    <div class="stat"><div class="n" data-target="48–72h" style="font-size:44px;">0</div><div class="l">early warning before<br>critical failures</div></div>
+    <div class="stat"><div class="n" data-target="8+">0</div><div class="l">systems managed<br>from one dashboard</div></div>
+  </div>
+  <div class="cards c4" style="max-width:1000px;">
+    <div class="card green"><h3>Reduce Operating Costs</h3><p>Calculates CO₂ values to eliminate redundant sensors. Optimizes chemical dosing.</p></div>
+    <div class="card green"><h3>Prevent Catastrophic Loss</h3><p>Proactive monitoring. Each €300M facility holds millions in biological assets at risk.</p></div>
+    <div class="card green"><h3>Accelerate Decisions</h3><p>Hours of manual calculation → instant visual intelligence. Data to decision in seconds.</p></div>
+    <div class="card green"><h3>Scale Without Complexity</h3><p>2, 4, or 8+ independent RAS loops from one platform. Complexity doesn't grow linearly.</p></div>
+  </div>
+</div>
+
+<!-- 9. INNOVATION -->
+<div class="slide teal center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>INNOVATION</h2>
+  <div class="sub">60+ Water Chemistry Functions — A Unique Analytical Engine</div>
+  <div style="display:flex;gap:12px;margin-bottom:16px;" class="z1">
+    <span class="badge gov">Norwegian Government Co-Funded Project</span>
+    <span class="badge test">Validated on Arctic Charr at 100–120 kg/m³</span>
+  </div>
+  <div class="cards c2" style="max-width:1000px;">
+    <div class="card" style="grid-row:span 2;"><h3>The Aqua Intel Chart</h3><p>Every interaction, every chemical relationship — unified in one chart.<br><br>Red/orange = toxic. Green = safe operating range.<br><br>9 chemicals with unique directional angles showing impact on water quality.<br><br><strong style="color:#38bdf8;">This is not a dashboard.<br>It is a decision engine.</strong></p></div>
+    <div class="card"><h3>NH₃ Toxicity × pH</h3><p>Calculates equilibrium between toxic NH₃ and non-toxic NH₄⁺ as function of pH and temperature.</p></div>
+    <div class="card"><h3>CO₂ × pH Modeling</h3><p>Computes CO₂ from other parameters. Reduces sensor costs. Eliminates the most expensive monitoring gap.</p></div>
+  </div>
+</div>
+
+<!-- 10. BUSINESS MODEL -->
+<div class="slide purple center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>BUSINESS MODEL</h2>
+  <div class="sub">Recurring Revenue with High Gross Margins</div>
+  <div class="cards c3" style="max-width:1050px;">
+    <div class="card"><h3 style="font-size:9px;color:#2d5a80;letter-spacing:2px;">CORE REVENUE</h3><h3>Software License (SaaS)</h3><p>Annual/monthly subscription per facility. Scales with RAS loops. Predictable recurring revenue.</p></div>
+    <div class="card"><h3 style="font-size:9px;color:#2d5a80;letter-spacing:2px;">TECHNICAL</h3><h3>Sales & Integration</h3><p>On-site assessment, sensor integration (SCADA, PLCs), custom deployment. Deep customer relationship.</p></div>
+    <div class="card"><h3 style="font-size:9px;color:#2d5a80;letter-spacing:2px;">HIGH MARGIN</h3><h3>Consulting & Advisory</h3><p>Premium water chemistry optimization and RAS management consulting. Deepens customer lock-in.</p></div>
+  </div>
+</div>
+
+<!-- 11. MARKET OVERVIEW -->
+<div class="slide purple center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>MARKET OPPORTUNITY</h2>
+  <div class="sub">A Multi-Billion Dollar Market with Explosive Growth</div>
+  <div class="stats">
+    <div class="stat"><div class="n" data-target="$5–7B" style="font-size:46px;">0</div><div class="l">Global RAS market (2025)<br>→ $10–17B by early 2030s</div></div>
+    <div class="stat"><div class="n" data-target="6,500+" style="font-size:46px;">0</div><div class="l">Commercial RAS installations<br>Up 30% from 2020</div></div>
+    <div class="stat"><div class="n" data-target="$1.3B" style="font-size:46px;">0</div><div class="l">Raised in land-based deals<br>Jan–May 2025</div></div>
+    <div class="stat"><div class="n" data-target="€300M" style="font-size:46px;">0</div><div class="l">Typical cost of a<br>20,000t RAS facility</div></div>
+  </div>
+  <div class="cards c4" style="max-width:1000px;">
+    <div class="card"><h3>WQ Monitoring</h3><p>$437M–$1.2B today → $786M–$2.8B by 2030–2033. Software = 30% of revenue.</p></div>
+    <div class="card"><h3>Precision Aquaculture</h3><p>$789M → $1,435M by 2030 (11.1% CAGR). Europe = 22% of global market.</p></div>
+    <div class="card"><h3>Europe RAS</h3><p>€842M → €1,483M by 2031 (7.3% CAGR). Norway leads.</p></div>
+    <div class="card"><h3>Production Target</h3><p>200,000 tonnes land-based salmon by 2030 — 5% of global supply.</p></div>
+  </div>
+</div>
+
+<!-- 12. MARKET SEGMENTS (TAM) -->
+<div class="slide purple center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>TOTAL ADDRESSABLE MARKET</h2>
+  <div class="sub">Beyond RAS — Four High-Growth Segments</div>
+  <div class="cards c2" style="max-width:1050px;">
+    <div class="card green"><h3>RAS Farms (Land-Based)</h3><p><strong style="color:#34d399;">$83B → $217.5B by 2034 (11.3% CAGR)</strong><br>Increasing adoption for year-round production and disease control. High need for automation and stable water conditions in closed systems.<br><br><em style="color:#5a8aaa;">Relevance: Critical for operational stability and biosecurity.</em></p></div>
+    <div class="card"><h3>Cage Farms (Marine/Sea)</h3><p><strong style="color:#38bdf8;">$382M → $1.12B by 2033 (12.5% CAGR)</strong><br>Expansion into offshore, exposed sites. Need for remote management, real-time water quality, fish health monitoring.<br><br><em style="color:#5a8aaa;">Relevance: Remote monitoring and data-driven decisions in marine environments.</em></p></div>
+    <div class="card"><h3>Pond Farms</h3><p><strong style="color:#38bdf8;">$690M → $2.01B by 2035 (12.94% CAGR)</strong><br>High stocking densities and disease risks in Asian shrimp/fish ponds. Automated monitoring to improve yields and reduce losses.<br><br><em style="color:#5a8aaa;">Relevance: Real-time data to prevent losses and optimize feed.</em></p></div>
+    <div class="card amber"><h3>Ocean/Fjord Monitoring</h3><p><strong style="color:#fbbf24;">→ $23B by 2037</strong><br>Government regulations, pollution control, ecosystem conservation. Used by research institutes for environmental impact assessments.<br><br><em style="color:#5a8aaa;">Relevance: Compliance, research, water body health monitoring.</em></p></div>
+  </div>
+</div>
+
+<!-- 12. GTM -->
+<div class="slide center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>GO-TO-MARKET</h2>
+  <div class="sub">Multi-Channel Sales with Technical Depth</div>
+  <div class="cards c3" style="max-width:1050px;margin-bottom:14px;">
+    <div class="card"><h3>Direct Sales</h3><p>On-site demos, sensor integration, ROI-driven proposals to RAS operators.</p></div>
+    <div class="card"><h3>Insurance Partners</h3><p>Risk-reduction. Insurers require real-time monitoring for mortality coverage.</p></div>
+    <div class="card"><h3>Aquariums & Education</h3><p>Public aquariums, research facilities, universities.</p></div>
+  </div>
+  <div class="phases">
+    <div class="phase"><div class="num">01</div><h3>Norway</h3><p>160+ RAS farms. Anchor in world's most advanced aquaculture market.</p></div>
+    <div class="phase"><div class="num">02</div><h3>Nordics & Europe</h3><p>Scotland, Denmark, Iceland. 3 major facilities under construction.</p></div>
+    <div class="phase"><div class="num">03</div><h3>Americas & APAC</h3><p>US, Canada, Asia via partnerships with RAS OEMs.</p></div>
+    <div class="phase"><div class="num">04</div><h3>Global Standard</h3><p>Industry standard for water quality intelligence.</p></div>
+  </div>
+</div>
+
+<!-- 13. ROADMAP -->
+<div class="slide center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>PRODUCT ROADMAP</h2>
+  <div class="sub">From Current Platform to Global Scale</div>
+  <div class="roadmap">
+    <div class="rm"><div class="period">Q1–Q2 2026</div><h3>VALIDATE</h3><p>Pilot users. Refine UX/UI. Validate zones across species. Baseline KPIs.</p></div>
+    <div class="rm"><div class="period">Q3–Q4 2026</div><h3>DEPLOY</h3><p>First commercial customers. Sensor integration. Multi-system dashboard 2–4 loops.</p></div>
+    <div class="rm"><div class="period">H1 2027</div><h3>SCALE</h3><p>8+ systems. API integrations. Insurance partnerships. Aquarium vertical.</p></div>
+    <div class="rm"><div class="period">H2 2027+</div><h3>GROW</h3><p>AI predictions. Dosing pump integration. Multi-language. Mobile app.</p></div>
+  </div>
+</div>
+
+<!-- 14. TEAM -->
+<div class="slide center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>THE TEAM & PARTNERS</h2>
+  <div class="sub">Deep Domain Expertise Backed by Industry Partners</div>
+  <div class="cards c2" style="max-width:900px;margin-bottom:20px;">
+    <div class="card"><h3>Founder / CEO</h3><p>Architect of 60+ water chemistry functions. Combines hands-on RAS operations with software development — a rare intersection competitors cannot replicate.</p></div>
+    <div class="card"><h3>Technical Team</h3><p>Software development, water chemistry engineering, RAS operations. Sensor integration, real-time analytics, scientific modeling.</p></div>
+  </div>
+  <div class="kicker" style="margin-bottom:14px;">Strategic Partners</div>
+  <div class="cards c4 z1" style="max-width:1000px;">
+    <div class="card"><h3>Noras Watertech</h3><p>Parent. RAS engineering & construction. 15+ years.</p></div>
+    <div class="card"><h3>MoreFish AS</h3><p>Aquaculture platform. Strategic integration partner.</p></div>
+    <div class="card"><h3>[Partner 3]</h3><p>Sensor / hardware integration.</p></div>
+    <div class="card"><h3>[Partner 4]</h3><p>Insurance / financial services.</p></div>
+  </div>
+</div>
+
+<!-- 15. REGULATORY -->
+<div class="slide gold center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>REGULATORY TAILWINDS</h2>
+  <div class="sub">The Voluntary Monitoring Era Is Ending</div>
+  <div class="cards c2" style="max-width:1000px;">
+    <div class="card"><h3>EU Digital Traceability</h3><p>Full digital traceability for fresh aquaculture effective January 2026. Processed by 2029.</p></div>
+    <div class="card"><h3>Norway 2025 Agreement</h3><p>"Improved monitoring through new technology and automatic data transfer from farmers to authorities."</p></div>
+    <div class="card amber"><h3>Traffic Light System</h3><p>25% of Norway's zones "red" in 2023 — requiring production cuts and stricter monitoring.</p></div>
+    <div class="card"><h3>Insurance Requirements</h3><p>Real-time monitoring becoming a prerequisite for mortality coverage.</p></div>
+  </div>
+  <div class="bottom-note">Aqua Intel sits at the exact intersection of market need and regulatory mandate.</div>
+</div>
+
+<!-- 16. INVESTMENT -->
+<div class="slide teal center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>INVESTMENT OPPORTUNITY</h2>
+  <div class="sub">Join Us in Building the Intelligence Layer for Global Aquaculture</div>
+  <div class="stats" style="margin-bottom:24px;">
+    <div class="stat"><div class="n" data-target="NOK 10M" style="font-size:48px;">0</div><div class="l">Total project funding<br>50% Norwegian Government Grant</div></div>
+  </div>
+  <div class="cards c2" style="max-width:900px;">
+    <div class="card"><h3>Proprietary Technology</h3><p>60+ functions. Years of R&D. Competitors cannot replicate.</p></div>
+    <div class="card"><h3>Explosive Market</h3><p>RAS doubling to $10–17B. $1.3B invested in H1 2025 alone.</p></div>
+    <div class="card"><h3>Scalable SaaS</h3><p>Per-facility licensing. Recurring revenue. Software = 30% of market.</p></div>
+    <div class="card"><h3>Regulatory Catalyst</h3><p>EU 2026 mandate + Norway data transfer = monitoring becomes mandatory.</p></div>
+  </div>
+</div>
+
+<!-- 17. USE OF FUNDS -->
+<div class="slide teal center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>USE OF FUNDS</h2>
+  <div class="sub">Capital Deployment Plan</div>
+  <div class="alloc"><div class="a1">50% Sales & Marketing</div><div class="a2">25% Product</div><div class="a3">15% Ops</div><div class="a4">10%</div></div>
+  <div class="cards c2" style="max-width:900px;">
+    <div class="card"><h3>50% — Sales & Marketing</h3><p>Technical sales, channels, conferences, digital, insurance partnerships.</p></div>
+    <div class="card"><h3>25% — Product Development</h3><p>Platform, sensors, AI, mobile, API ecosystem.</p></div>
+    <div class="card"><h3>15% — Operations</h3><p>Infrastructure, customer success, support.</p></div>
+    <div class="card"><h3>10% — G&A</h3><p>Legal, accounting, contingency.</p></div>
+  </div>
+  <div class="cards c3 z1" style="max-width:1000px;margin-top:10px;">
+    <div class="card green"><h3>Year 1</h3><p>Norway anchor customers. Sales team. Pricing validation.</p></div>
+    <div class="card green"><h3>Year 2</h3><p>Europe expansion. Aquarium vertical. OEM partnerships.</p></div>
+    <div class="card green"><h3>Year 3</h3><p>Americas & APAC. Global standard.</p></div>
+  </div>
+</div>
+
+<!-- 18. ROI & EXIT -->
+<div class="slide center">
+  <div class="sh"><span class="brand">Aqua Intel &bull; Noras Watertech AS &bull; Water Quality Management Intelligence</span></div>
+  <h2>ROI & EXIT</h2>
+  <div class="sub">How Investors Realize Returns</div>
+  <div class="cards c3" style="max-width:1050px;">
+    <div class="card"><h3>Strategic Acquisition</h3><p>RAS manufacturers, aquaculture corporations, water tech companies. Proprietary tech + installed base = strategic value.</p></div>
+    <div class="card"><h3>Growth-Driven Valuation</h3><p>SaaS model drives compounding valuation. ARR scales through geographic expansion.</p></div>
+    <div class="card"><h3>Secondary / PE Exit</h3><p>Proven tech, recurring revenue, multi-billion market = attractive PE target.</p></div>
+  </div>
+</div>
+
+<!-- 19. THANK YOU -->
+<div class="slide center">
+  <div class="kicker">Maritime &ensp; | &ensp; Landbased &ensp; | &ensp; Environmental</div>
+  <h1 class="grad" style="font-size:52px;">Thank You</h1>
+  <p style="font-size:20px;color:#4a7ea8;">Water Quality Management Intelligence</p>
+  <div class="divider" style="margin:20px auto;"></div>
+  <div style="font-size:14px;color:#2d5a80;line-height:2;">Noras Watertech AS<br>Moreneveien 1, 3158 Andebu, Norway<br>+47 911 77 787</div>
+  <div style="margin-top:24px;font-size:10px;color:#1a3050;">Confidential &bull; For Investor Use Only</div>
+</div>
+
+</div>
+
+<!-- UI -->
+<a class="nav-a left" id="nav-prev"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></a>
+<a class="nav-a right" id="nav-next"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg></a>
+<div class="progress" id="progress"></div>
+<div class="counter" id="ctr">1 / 19</div>
+<div class="timer-overlay" id="timer"></div>
+
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;
+let cur=0,timerOn=false;
+
+// Section map for dots (optional future use)
+const SECTIONS=[
+  {name:'Opening',slides:[0]},
+  {name:'Problem',slides:[1,2]},
+  {name:'Demo',slides:[3,4]},
+  {name:'Solution',slides:[5,6,7,8]},
+  {name:'Business',slides:[9,10,11]},
+  {name:'Execution',slides:[12,13,14]},
+  {name:'Investment',slides:[15,16,17,18]}
+];
+
+// Slide timing guide (seconds)
+const TIMING=[10,30,25,30,40,25,20,20,20,15,20,15,20,15,15,15,20,10,10,0];
+
+function go(i){
+  if(i<0||i>=total||i===cur)return;
+  const dir=i>cur?1:-1;
+  const leaving=slides[cur];
+  leaving.classList.remove('active');
+  leaving.classList.add(dir>0?'exit-left':'exit-right');
+  setTimeout(()=>{leaving.classList.remove('exit-left','exit-right');},600);
+
+  cur=i;
+  const entering=slides[cur];
+  entering.style.transform=`translateX(${50*dir}px) scale(0.98)`;
+  entering.classList.add('active');
+  void entering.offsetHeight;
+  entering.style.transform='';
+
+  // Stagger children
+  stagger(entering);
+  // Animate numbers
+  animNums(entering);
+
+  document.getElementById('ctr').textContent=`${cur+1} / ${total}`;
+  document.getElementById('progress').style.width=`${((cur+1)/total)*100}%`;
+
+  // Timer
+  if(timerOn){
+    const t=TIMING[cur];
+    document.getElementById('timer').textContent=t?`~${t}s`:' Q&A';
+  }
+
+  // Charts
+  if(cur===3)initChart('demo-1',{});
+  if(cur===4){initChart('demo-4a',{});initChart('demo-4b',{initial_ph:7.8,initial_alk:2.5,target_ph:8.5,target_alk:3.8});initChart('demo-4c',{temp:20,salinity:28,initial_ph:7.2,target_alk:2.8});initChart('demo-4d',{temp:28,calcium:350,initial_ph:8.0,initial_alk:3.0,target_ph:8.8,target_alk:4.0});}
+}
+
+function stagger(slide){
+  const items=slide.querySelectorAll('.card,.stat,.rm,.phase,.badge');
+  items.forEach((el,i)=>{el.style.animationDelay=`${200+i*80}ms`;});
+  const cols=slide.querySelectorAll('.col');
+  cols.forEach(col=>{
+    col.querySelectorAll('li').forEach((li,j)=>{li.style.animationDelay=`${400+j*60}ms`;});
+  });
+  const phases=slide.querySelectorAll('.phase .num');
+  phases.forEach((el,i)=>{el.style.animationDelay=`${300+i*150}ms`;});
+}
+
+function animNums(slide){
+  slide.querySelectorAll('.stat .n[data-target]').forEach(el=>{
+    const raw=el.getAttribute('data-target');
+    const m=raw.match(/^([^0-9]*?)([\d,.]+)(.*)$/);
+    if(!m){el.textContent=raw;return;}
+    const[,pre,numStr,suf]=m;
+    const target=parseFloat(numStr.replace(',',''));
+    const dec=numStr.includes('.')?numStr.split('.')[1].length:0;
+    const hasComma=numStr.includes(',');
+    const dur=1200,start=performance.now();
+    el.textContent=pre+'0'+suf;
+    setTimeout(()=>{
+      (function tick(now){
+        const t=Math.min((now-start)/dur,1);
+        const e=1-Math.pow(1-t,3);
+        let v=(target*e).toFixed(dec);
+        if(hasComma)v=Number(v).toLocaleString('en-US',{minimumFractionDigits:dec});
+        el.textContent=pre+v+suf;
+        if(t<1)requestAnimationFrame(tick);
+      })(performance.now());
+    },300);
+  });
+}
+
+// Nav
+document.getElementById('nav-prev').addEventListener('click',()=>go(cur-1));
+document.getElementById('nav-next').addEventListener('click',()=>go(cur+1));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1);}
+  if(e.key==='Home'){e.preventDefault();go(0);}
+  if(e.key==='End'){e.preventDefault();go(total-1);}
+  if(e.key==='f'||e.key==='F'){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});
+    else document.exitFullscreen();
+  }
+  if(e.key==='n'||e.key==='N'){
+    timerOn=!timerOn;
+    const el=document.getElementById('timer');
+    el.classList.toggle('show',timerOn);
+    if(timerOn){const t=TIMING[cur];el.textContent=t?`~${t}s`:'Q&A';}
+  }
+  if(e.key>='1'&&e.key<='9'){const n=parseInt(e.key)-1;if(n<total)go(n);}
+});
+
+// Charts
+const _ci={};
+function initChart(id,ov){
+  if(_ci[id])return;_ci[id]=true;
+  const p={temp:25,salinity:35,calcium:412,initial_ph:7.5,initial_alk:2,target_ph:8.2,target_alk:3.2,dic_max:6,alk_max:6,volume:1000,tan:1,uia_limit:0.02,co2_limit:15,...ov};
+  fetch(`/api/deffeyes-data/?${new URLSearchParams(p)}`).then(r=>r.json()).then(d=>{
+    const C={pm:'rgba(51,65,85,0.3)',pn:'rgba(148,163,184,0.15)',om:'#0369a1',ua:'#dc2626',uf:'rgba(220,38,38,0.06)',c2:'#d97706',cf:'rgba(217,119,6,0.06)',ini:'#dc2626',tgt:'#10b981',g:'#f0f0f0'};
+    const dm=p.dic_max,am=p.alk_max,f=pts=>pts.filter(q=>q.y>=-.5&&q.y<=am*1.05&&q.x>=0&&q.x<=dm),T=[];
+    d.minor_isopleths.forEach(iso=>{const pts=f(iso.points);T.push({x:pts.map(q=>q.x),y:pts.map(q=>q.y),mode:'lines',line:{color:C.pn,width:.5,dash:'dot'},showlegend:false,hoverinfo:'skip'});});
+    d.major_isopleths.forEach(iso=>{const pts=f(iso.points);T.push({x:pts.map(q=>q.x),y:pts.map(q=>q.y),mode:'lines',line:{color:C.pm,width:.8},showlegend:false,hoverinfo:'skip'});});
+    if(d.co2_boundary&&d.co2_boundary.points){const pts=f(d.co2_boundary.points);if(pts.length>2){T.push({x:[...pts.map(q=>q.x),pts[pts.length-1].x,pts[0].x],y:[...pts.map(q=>q.y),0,0],fill:'toself',fillcolor:C.cf,line:{width:0},showlegend:false,hoverinfo:'skip'});T.push({x:pts.map(q=>q.x),y:pts.map(q=>q.y),mode:'lines',line:{color:C.c2,width:1.5,dash:'dashdot'},showlegend:false,hoverinfo:'skip'});}}
+    if(d.uia_boundary&&d.uia_boundary.points){const pts=f(d.uia_boundary.points);if(pts.length>2){T.push({x:[...pts.map(q=>q.x),pts[pts.length-1].x,pts[0].x],y:[...pts.map(q=>q.y),am,am],fill:'toself',fillcolor:C.uf,line:{width:0},showlegend:false,hoverinfo:'skip'});T.push({x:pts.map(q=>q.x),y:pts.map(q=>q.y),mode:'lines',line:{color:C.ua,width:1.5,dash:'dashdot'},showlegend:false,hoverinfo:'skip'});}}
+    if(d.omega_boundary.length>0){const pts=f(d.omega_boundary);T.push({x:pts.map(q=>q.x),y:pts.map(q=>q.y),mode:'lines',line:{color:C.om,width:2,dash:'dash'},showlegend:false,hoverinfo:'skip'});}
+    T.push({x:[d.initial_waypoint.dic],y:[d.initial_waypoint.alk],mode:'markers+text',marker:{color:C.ini,size:12,symbol:'circle',line:{color:'#fff',width:2}},text:[`pH ${d.initial_waypoint.ph}`],textposition:'top right',textfont:{color:C.ini,size:9},showlegend:false,hoverinfo:'skip'});
+    T.push({x:[d.target_waypoint.dic],y:[d.target_waypoint.alk],mode:'markers+text',marker:{color:C.tgt,size:12,symbol:'diamond',line:{color:'#fff',width:2}},text:[`pH ${d.target_waypoint.ph}`],textposition:'top right',textfont:{color:C.tgt,size:9},showlegend:false,hoverinfo:'skip'});
+    const A=[];d.major_isopleths.forEach(iso=>{const pts=f(iso.points);if(pts.length>5){const pt=pts[Math.floor(pts.length*.7)];A.push({x:pt.x,y:pt.y,text:`${iso.ph}`,showarrow:false,font:{color:'#b0b8c0',size:8},borderpad:1});}});
+    Plotly.newPlot(id,T,{xaxis:{title:{text:'DIC (mmol/kg)',font:{color:'#94a3b8',size:9}},range:[0,dm],gridcolor:C.g,tickfont:{color:'#94a3b8',size:8},linecolor:'#e5e7eb',showline:true,mirror:true},yaxis:{title:{text:'Alk (meq/L)',font:{color:'#94a3b8',size:9}},range:[0,am],gridcolor:C.g,tickfont:{color:'#94a3b8',size:8},linecolor:'#e5e7eb',showline:true,mirror:true},plot_bgcolor:'#fff',paper_bgcolor:'#fff',margin:{t:8,r:8,b:30,l:35},annotations:A,showlegend:false,font:{family:'Inter,sans-serif'}},{responsive:true,displayModeBar:false});
+  }).catch(console.error);
+}
+</script>
+</body>
+</html>
