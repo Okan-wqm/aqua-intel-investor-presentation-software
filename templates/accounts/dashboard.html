@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Aqua Intel{% endblock %}
+
+{% block extra_css %}
+.dashboard-container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(6, 147, 227, 0.2);
+}
+
+.dashboard-header h1 {
+    font-size: 28px;
+    color: #ffffff;
+}
+
+.btn-logout {
+    padding: 10px 24px;
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+    color: #ff6b7a;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-logout:hover {
+    background: rgba(220, 53, 69, 0.25);
+}
+
+.welcome-text {
+    font-size: 18px;
+    color: #8899aa;
+}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div>
+            <h1>Aqua Intel Dashboard</h1>
+            <p class="welcome-text">Welcome, {{ user.username }}</p>
+        </div>
+        <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+    </div>
+</div>
+{% endblock %}
