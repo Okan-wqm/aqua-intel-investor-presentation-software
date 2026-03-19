@@ -147,6 +147,43 @@ def adjust_api(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
+# ── CO2 from pH array ──
+
+@login_required
+def co2_from_ph_api(request):
+    """Calculate CO2 (mg/L) for an array of pH(NBS) values at given T, S, Alk."""
+    try:
+        temp_c = float(request.GET.get('temp', 15.0))
+        salinity = float(request.GET.get('salinity', 34.0))
+        alk_meq = float(request.GET.get('alk', 2.5))
+        ph_json = request.GET.get('ph_values', '[]')
+
+        import json as _json
+        ph_values = _json.loads(ph_json)
+
+        tk = temp_c + 273.15
+        sal = salinity
+        alk_mol = alk_meq / 1000.0
+
+        from .carbonate import (ph_nbs_to_free, calc_dic_of_alk,
+                                calc_k1, calc_k2, alpha_zero)
+
+        k1 = calc_k1(tk, sal)
+        k2 = calc_k2(tk, sal)
+        co2_values = []
+        for ph_nbs in ph_values:
+            ph_free = ph_nbs_to_free(ph_nbs, sal, tk)
+            dic_mol = calc_dic_of_alk(alk_mol, ph_free, tk, sal)
+            h = 10.0 ** (-ph_free)
+            a0 = alpha_zero(h, k1, k2)
+            co2_mg = dic_mol * a0 * 44009.6
+            co2_values.append(round(co2_mg, 2))
+
+        return JsonResponse({'co2': co2_values})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
 # ── Save / Load / List / Delete systems ──
 
 @login_required

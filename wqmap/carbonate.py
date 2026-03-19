@@ -398,10 +398,10 @@ REAGENTS = [
 
 REAGENT_MAP = {r['name']: r for r in REAGENTS}
 
-# HCl muriatic acid conversion
+# HCl muriatic acid conversion (31.45% HCl, sp.gr. 1.16)
 _MURIATIC_POSTO = 0.3145
 _MURIATIC_SPGR = 1.16
-_MURIATIC_MASS_PER_L = _MURIATIC_POSTO * _MURIATIC_SPGR
+_MURIATIC_G_PER_L = _MURIATIC_POSTO * _MURIATIC_SPGR * 1000  # g HCl per liter of muriatic acid
 
 
 def calc_adjustment(init_dic, init_alk, final_dic, final_alk, vol_l,
@@ -491,13 +491,11 @@ def calc_adjustment(init_dic, init_alk, final_dic, final_alk, vol_l,
     chem1_unit = 'g'
     chem2_unit = 'g'
     if lower['name'] == 'hcl':
-        chem1_g /= _MURIATIC_MASS_PER_L
+        chem1_g = (chem1_g / _MURIATIC_G_PER_L) * 1000  # g → L → mL
         chem1_unit = 'mL'
-        chem1_g *= 1000  # kg→L→mL
     if higher['name'] == 'hcl':
-        chem2_g /= _MURIATIC_MASS_PER_L
+        chem2_g = (chem2_g / _MURIATIC_G_PER_L) * 1000  # g → L → mL
         chem2_unit = 'mL'
-        chem2_g *= 1000
 
     return {
         'reagent1': {
