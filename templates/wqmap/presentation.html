@@ -273,6 +273,11 @@ p{font-size:15px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   100%{filter:brightness(1);}
 }
 
+/* ═══ PHOTOS ═══ */
+.photo{border-radius:var(--radius);overflow:hidden;position:relative;z-index:1;box-shadow:0 8px 40px rgba(0,0,0,0.3);}
+.photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-caption{position:absolute;bottom:0;left:0;right:0;padding:10px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.7));font-size:10px;color:#fff;font-weight:600;letter-spacing:.5px;}
+
 /* ═══ HANDWRITING ═══ */
 .handwrite{font-family:'Caveat',cursive;font-weight:600;color:#7dd3fc;display:inline-block;overflow:hidden;white-space:nowrap;border-right:2px solid rgba(125,211,252,0.6);width:0;animation:typewrite 2s cubic-bezier(.4,0,.2,1) 1.8s forwards,blinkCaret .6s step-end 1.8s 6;}
 @keyframes typewrite{from{width:0;}to{width:100%;}}
@@ -317,10 +322,16 @@ p{font-size:15px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
     <div class="stat"><div class="n" data-target="$15.5B">0</div><div class="l">in mortality costs across<br>4 nations (2013–2019)</div><div class="src">Dead Loss Report — Just Economics</div></div>
     <div class="stat"><div class="n" data-target="100M+">0</div><div class="l">fish deaths in Norway alone<br>in 2023 (record year)</div><div class="src">Norwegian Directorate of Fisheries</div></div>
   </div>
-  <div class="cards c3" style="max-width:1050px;">
-    <div class="card red"><h3>Parameter Blindness</h3><p>Current systems show pH, NH₃, CO₂ in isolation. But these interact — adjusting one shifts others into danger. Operators can't see relationships.</p></div>
-    <div class="card amber"><h3>Multi-System Chaos</h3><p>Modern RAS facilities run 2–8 independent loops. Each has its own chemistry. Managing 4 systems isn't 4x harder — it's exponentially harder.</p></div>
-    <div class="card purple"><h3>Workforce Crisis</h3><p>RAS facilities are in remote locations. Finding qualified water chemistry operators is nearly impossible. When one leaves, all knowledge goes.</p></div>
+  <div style="display:flex;gap:20px;width:100%;max-width:1100px;z-index:1;align-items:stretch;">
+    <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+      <div class="card red"><h3>Parameter Blindness</h3><p>Current systems show pH, NH₃, CO₂ in isolation. But these interact — adjusting one shifts others into danger.</p></div>
+      <div class="card amber"><h3>Multi-System Chaos</h3><p>Modern RAS facilities run 2–8 independent loops. Each has its own chemistry. Exponentially harder to manage.</p></div>
+      <div class="card purple"><h3>Workforce Crisis</h3><p>RAS facilities are in remote locations. Qualified operators nearly impossible to find.</p></div>
+    </div>
+    <div class="photo" style="width:340px;min-height:280px;flex-shrink:0;">
+      <img src="/static/images/multiple-systems.jpg" alt="Multiple RAS systems">
+      <div class="photo-caption">Real RAS facility — multiple independent systems</div>
+    </div>
   </div>
 </div>
 
@@ -504,10 +515,16 @@ p{font-size:15px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
     <span class="badge gov">Norwegian Government Co-Funded Project</span>
     <span class="badge test">Validated on Arctic Charr at 100–120 kg/m³</span>
   </div>
-  <div class="cards c2" style="max-width:1000px;">
-    <div class="card cyan" style="grid-row:span 2;"><h3>The Aqua Intel Chart</h3><p>Every interaction, every chemical relationship — unified in one chart.<br><br>Red/orange = toxic. Green = safe operating range.<br><br>9 chemicals with unique directional angles showing impact on water quality.<br><br><strong style="color:#38bdf8;">This is not a dashboard.<br>It is a decision engine.</strong></p></div>
-    <div class="card red"><h3>NH₃ Toxicity × pH</h3><p>Calculates equilibrium between toxic NH₃ and non-toxic NH₄⁺ as function of pH and temperature.</p></div>
-    <div class="card amber"><h3>CO₂ × pH Modeling</h3><p>Computes CO₂ from other parameters. Reduces sensor costs. Eliminates the most expensive monitoring gap.</p></div>
+  <div style="display:flex;gap:20px;width:100%;max-width:1100px;z-index:1;align-items:stretch;">
+    <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+      <div class="card cyan"><h3>The Aqua Intel Chart</h3><p>Every interaction, every chemical relationship — unified in one chart. Red/orange = toxic. Green = safe. 9 chemicals with unique directional angles.<br><br><strong style="color:#5eead4;">This is not a dashboard. It is a decision engine.</strong></p></div>
+      <div class="card red"><h3>NH₃ Toxicity × pH</h3><p>Calculates equilibrium between toxic NH₃ and non-toxic NH₄⁺ as function of pH and temperature.</p></div>
+      <div class="card amber"><h3>CO₂ × pH Modeling</h3><p>Computes CO₂ from other parameters. Reduces sensor costs. Eliminates the most expensive monitoring gap.</p></div>
+    </div>
+    <div class="photo" style="width:340px;min-height:280px;flex-shrink:0;">
+      <img src="/static/images/high-density.jpg" alt="High density Arctic Charr">
+      <div class="photo-caption">Arctic Charr at 100–120 kg/m³ — validated in production</div>
+    </div>
   </div>
 </div>
 
