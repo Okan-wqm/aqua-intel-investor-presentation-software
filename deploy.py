@@ -1,6 +1,8 @@
 """Deploy script — runs commands on remote server via SSH."""
 import paramiko
 import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 HOST = '142.93.109.162'
 USER = 'root'

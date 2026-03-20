@@ -32,14 +32,14 @@ def _ensure_systems(user, count):
     return existing[:count]
 
 
-@login_required
+
 def deffeyes_chart_view(request):
     return multi_chart_view(request, 4)
 
 
 SLIDES = [1, 2, 4, 8, 16]
 
-@login_required
+
 def multi_chart_view(request, count):
     count = min(max(count, 1), 16)
     if count not in SLIDES:
@@ -60,7 +60,7 @@ def multi_chart_view(request, count):
     })
 
 
-@login_required
+
 def deffeyes_data_api(request):
     try:
         temp_c = float(request.GET.get('temp', 25.0))
@@ -89,7 +89,7 @@ def deffeyes_data_api(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
-@login_required
+
 def light_update_api(request):
     try:
         temp_c = float(request.GET.get('temp', 25.0))
@@ -123,7 +123,7 @@ def light_update_api(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
-@login_required
+
 def adjust_api(request):
     try:
         temp_c = float(request.GET.get('temp', 25.0))
@@ -149,7 +149,7 @@ def adjust_api(request):
 
 # ── CO2 from pH array ──
 
-@login_required
+
 def co2_from_ph_api(request):
     """Calculate CO2 (mg/L) for an array of pH(NBS) values at given T, S, Alk."""
     try:
@@ -186,7 +186,7 @@ def co2_from_ph_api(request):
 
 # ── Save / Load / List / Delete systems ──
 
-@login_required
+
 def system_save_api(request):
     """Save current parameters as a system. POST with JSON body."""
     if request.method != 'POST':
@@ -229,7 +229,7 @@ def system_save_api(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
-@login_required
+
 def system_load_api(request, sys_id):
     """Load a saved system's parameters."""
     try:
@@ -239,14 +239,14 @@ def system_load_api(request, sys_id):
         return JsonResponse({'error': 'Not found'}, status=404)
 
 
-@login_required
+
 def system_list_api(request):
     """List all saved systems."""
     systems = list(request.user.wq_systems.values('id', 'name'))
     return JsonResponse({'systems': systems})
 
 
-@login_required
+
 def system_delete_api(request, sys_id):
     """Delete a saved system."""
     if request.method != 'POST':
