@@ -408,11 +408,9 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   }
   .onepager h3{font-size:11pt!important;}
   .onepager p,.onepager div{font-size:9pt!important;line-height:1.35!important;}
-  /* Chart: explicit dimensions for print */
-  #onepager-chart-wrap{overflow:visible!important;height:250px!important;min-height:250px!important;flex:none!important;}
-  #onepager-chart{height:250px!important;min-height:250px!important;}
-  #onepager-chart .js-plotly-plot,#onepager-chart .plot-container,#onepager-chart .svg-container{width:100%!important;height:250px!important;}
-  .onepager svg.main-svg{width:100%!important;height:100%!important;}
+  /* Chart: show print image, hide plotly */
+  #onepager-chart-wrap{overflow:visible!important;position:relative!important;}
+  #onepager-print-img{display:block!important;width:100%!important;height:auto!important;}
   .nav-a,.progress,.counter,.timer-overlay,.version-badge,.particles,.no-print,.sh{display:none!important;}
 }
 
@@ -951,12 +949,7 @@ document.addEventListener('keydown',e=>{
     if(timerOn){const t=TIMING[cur];el.textContent=t?`~${t}s`:'Q&A';}
   }
   if(e.key>='1'&&e.key<='9'){const n=parseInt(e.key)-1;if(n<total)go(n);}
-  if(e.key==='p'||e.key==='P'){if(cur===total-1){
-    // Resize plotly chart before printing
-    const opChart=document.getElementById('onepager-chart');
-    if(opChart&&opChart.data){Plotly.relayout('onepager-chart',{width:opChart.offsetWidth,height:250});}
-    setTimeout(()=>window.print(),500);
-  }}
+  if(e.key==='p'||e.key==='P'){if(cur===total-1){printOnePager();}}
 });
 
 // ── Time-series line charts (pH, TAN, CO2 — traditional monitoring) ──
@@ -1173,6 +1166,32 @@ function stopAutoPlay(){
   reset('live-tgt-ph','7.5');reset('live-tgt-alk','2.5');
   const adjEl=document.getElementById('live-adj-result');
   if(adjEl){adjEl.style.display='none';adjEl.style.opacity='0';}
+}
+
+// ── Print One Pager ──
+function printOnePager(){
+  const chartEl=document.getElementById('onepager-chart');
+  if(!chartEl||!chartEl.data){window.print();return;}
+  // Convert plotly chart to static image before printing
+  Plotly.toImage(chartEl,{format:'png',width:800,height:500,scale:2}).then(dataUrl=>{
+    // Hide plotly, show image
+    const wrap=document.getElementById('onepager-chart-wrap');
+    const img=document.createElement('img');
+    img.src=dataUrl;
+    img.id='onepager-print-img';
+    img.style.cssText='width:100%;height:100%;object-fit:contain;position:absolute;inset:0;z-index:4;background:#fff;';
+    wrap.appendChild(img);
+    chartEl.style.visibility='hidden';
+    setTimeout(()=>{
+      window.print();
+      // Restore after print
+      setTimeout(()=>{
+        chartEl.style.visibility='visible';
+        const imgEl=document.getElementById('onepager-print-img');
+        if(imgEl)imgEl.remove();
+      },1000);
+    },300);
+  }).catch(()=>window.print());
 }
 
 // ── One Pager Chart ──
