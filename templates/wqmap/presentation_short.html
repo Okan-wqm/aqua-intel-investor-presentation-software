@@ -366,6 +366,19 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 .play-btn:hover{transform:translate(-50%,-50%) scale(1.05);box-shadow:0 12px 40px rgba(3,105,161,0.3);background:#fff;}
 .play-btn.hide{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(0.8);transition:all .4s ease;}
 
+/* ═══ PRINT (A3) ═══ */
+@media print{
+  @page{size:A3 landscape;margin:10mm;}
+  html,body{height:auto;overflow:visible;background:#fff!important;}
+  .deck,.slide{position:static!important;opacity:1!important;visibility:visible!important;transform:none!important;height:auto!important;overflow:visible!important;}
+  .slide{display:none!important;}
+  .slide.onepager-slide{display:flex!important;page-break-inside:avoid;background:#fff!important;padding:20px!important;}
+  .slide::before,.slide::after{display:none!important;}
+  .nav-a,.progress,.counter,.timer-overlay,.version-badge,.particles,.no-print{display:none!important;}
+  .onepager{max-width:100%!important;width:100%!important;}
+  .onepager *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;}
+}
+
 .version-badge{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(14,165,233,0.12);border:1px solid rgba(14,165,233,0.2);border-radius:20px;padding:4px 16px;font-size:9px;color:var(--accent-bright);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:var(--font-mono);backdrop-filter:blur(12px);}
 </style>
 </head>
@@ -695,51 +708,52 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   <div style="margin-top:28px;font-size:14px;color:#2d5070;">Confidential &bull; For Investor Use Only</div>
 </div>
 
-<!-- 10. ONE PAGER -->
-<div class="slide white center" style="padding:40px 50px;overflow-y:auto;">
-  <div class="sh"><span class="brand" style="color:#0369a1;">Aqua Intel &bull; One Pager</span></div>
+<!-- 10. ONE PAGER (A3 printable) -->
+<div class="slide white center onepager-slide" style="padding:30px 40px;overflow-y:auto;">
+  <div class="sh no-print"><span class="brand" style="color:#0369a1;">Aqua Intel &bull; One Pager &bull; Press P to print</span></div>
 
-  <!-- Header -->
-  <div style="z-index:1;width:100%;max-width:1150px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+  <div class="onepager" style="z-index:1;width:100%;max-width:1200px;">
+    <!-- Header -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
       <div>
-        <h2 style="color:#0c4a6e;font-size:36px;margin-bottom:2px;">AQUA INTEL</h2>
-        <div style="font-size:16px;color:#0369a1;font-weight:500;">Water Quality Management Intelligence</div>
+        <h2 style="color:#0c4a6e;font-size:32px;margin-bottom:0;letter-spacing:-1px;">AQUA INTEL</h2>
+        <div style="font-size:14px;color:#0369a1;font-weight:600;">Water Quality Management Intelligence</div>
       </div>
-      <div style="font-size:12px;color:#64748b;text-align:right;line-height:1.6;">Aqua Intel AS &bull; Andebu, Norway<br>+47 911 77 787</div>
+      <div style="text-align:right;">
+        <div style="font-size:11px;color:#64748b;line-height:1.5;">Aqua Intel AS &bull; Moreneveien 1, 3158 Andebu, Norway &bull; +47 911 77 787</div>
+        <div style="font-size:10px;color:#94a3b8;">Maritime | Landbased | Environmental</div>
+      </div>
     </div>
-    <div style="height:3px;background:linear-gradient(90deg,#0369a1,#38bdf8,#0369a1);border-radius:2px;margin-bottom:16px;"></div>
+    <div style="height:3px;background:linear-gradient(90deg,#0369a1,#38bdf8,#0369a1);border-radius:2px;margin-bottom:14px;"></div>
 
-    <!-- Two column layout -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <!-- 3 column layout -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
 
-      <!-- Left column -->
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <!-- Executive Summary / Problem -->
-        <div style="background:#fef2f2;border-left:4px solid #ef4444;border-radius:10px;padding:16px 18px;">
-          <h3 style="font-size:16px;color:#991b1b;margin-bottom:6px;font-weight:800;">THE PROBLEM</h3>
-          <p style="font-size:13px;color:#7f1d1d;line-height:1.6;">RAS facilities operate 2–8 independent systems with unique water chemistry. Operators rely on fragmented tools and manual calculations — slow, error-prone, and unable to scale. Result: mass mortality and significant economic losses.</p>
+      <!-- Col 1: Problem + Solution -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#fef2f2;border-left:4px solid #ef4444;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#991b1b;margin-bottom:4px;font-weight:800;letter-spacing:.5px;">THE PROBLEM</h3>
+          <p style="font-size:11px;color:#7f1d1d;line-height:1.55;max-width:none;">RAS facilities operate 2–8 independent systems with unique water chemistry. Operators rely on fragmented tools and manual calculations — slow, error-prone, unable to scale. Result: mass mortality ($15.5B in losses) and significant economic damage.</p>
         </div>
-
-        <!-- Solution -->
-        <div style="background:#f0f9ff;border-left:4px solid #0369a1;border-radius:10px;padding:16px 18px;">
-          <h3 style="font-size:16px;color:#0c4a6e;margin-bottom:6px;font-weight:800;">THE SOLUTION</h3>
-          <p style="font-size:13px;color:#1e3a5f;line-height:1.6;">Proprietary platform built on 60+ water chemistry functions. Connects to any sensor infrastructure, performs real-time calculations, and delivers a single integrated visual chart per system with optimum management recipes.</p>
+        <div style="background:#f0f9ff;border-left:4px solid #0369a1;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#0c4a6e;margin-bottom:4px;font-weight:800;letter-spacing:.5px;">THE SOLUTION</h3>
+          <p style="font-size:11px;color:#1e3a5f;line-height:1.55;max-width:none;">Proprietary platform built on 60+ water chemistry functions. Connects to any sensor infrastructure, performs real-time calculations, and delivers integrated visual charts with optimum management recipes per system.</p>
         </div>
-
-        <!-- Why Us -->
-        <div style="background:#f5f3ff;border-left:4px solid #8b5cf6;border-radius:10px;padding:16px 18px;">
-          <h3 style="font-size:16px;color:#5b21b6;margin-bottom:6px;font-weight:800;">COMPETITIVE MOAT</h3>
-          <p style="font-size:13px;color:#4c1d95;line-height:1.6;">Only platform that models full water chemistry interactions in real time, calculates derived toxic forms (NH₃, CO₂), and generates actionable recipes. 60+ scientific functions encoded — competitors cannot replicate.</p>
+        <div style="background:#f5f3ff;border-left:4px solid #8b5cf6;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#5b21b6;margin-bottom:4px;font-weight:800;letter-spacing:.5px;">COMPETITIVE MOAT</h3>
+          <p style="font-size:11px;color:#4c1d95;line-height:1.55;max-width:none;">Only platform that models full water chemistry interactions in real time, calculates derived toxic forms (NH₃, CO₂), and generates actionable recipes. 60+ scientific functions — competitors cannot replicate.</p>
         </div>
       </div>
 
-      <!-- Right column -->
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <!-- Key Capabilities -->
-        <div style="background:#f0fdf4;border-left:4px solid #10b981;border-radius:10px;padding:16px 18px;">
-          <h3 style="font-size:16px;color:#065f46;margin-bottom:8px;font-weight:800;">KEY CAPABILITIES</h3>
-          <div style="font-size:13px;color:#14532d;line-height:2;">
+      <!-- Col 2: Chart + Capabilities -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#fff;border:2px solid #0284c7;border-radius:8px;overflow:hidden;position:relative;">
+          <div style="position:absolute;top:6px;left:10px;font-size:9px;font-weight:700;color:#0c4a6e;background:rgba(224,242,254,0.95);padding:2px 8px;border-radius:4px;border:1px solid #0284c7;z-index:5;font-family:var(--font-mono);">The Aqua Intel Chart</div>
+          <div id="onepager-chart" style="width:100%;height:240px;"></div>
+        </div>
+        <div style="background:#f0fdf4;border-left:4px solid #10b981;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#065f46;margin-bottom:6px;font-weight:800;letter-spacing:.5px;">KEY CAPABILITIES</h3>
+          <div style="font-size:11px;color:#14532d;line-height:1.8;">
             &#10003; Real-time sensor integration with any hardware<br>
             &#10003; Unified multi-system dashboard (2–8+ RAS loops)<br>
             &#10003; Automated toxic form calculation (NH₃, CO₂)<br>
@@ -748,22 +762,44 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
             &#10003; 9 chemical analyses in one visual chart
           </div>
         </div>
+      </div>
 
-        <!-- Value Delivered -->
-        <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:10px;padding:16px 18px;">
-          <h3 style="font-size:16px;color:#92400e;margin-bottom:8px;font-weight:800;">VALUE DELIVERED</h3>
-          <div style="font-size:13px;color:#78350f;line-height:1.6;">
-            <div style="margin-bottom:6px;"><strong style="color:#d97706;">Cost Reduction:</strong> Calculates CO₂ to reduce sensors; optimizes chemical dosing</div>
-            <div style="margin-bottom:6px;"><strong style="color:#dc2626;">Risk Mitigation:</strong> Prevents mass mortalities through proactive monitoring</div>
-            <div style="margin-bottom:6px;"><strong style="color:#0369a1;">Speed to Decision:</strong> Manual calculations (hours) → real-time intelligence (seconds)</div>
+      <!-- Col 3: Value + Investment -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#92400e;margin-bottom:6px;font-weight:800;letter-spacing:.5px;">VALUE DELIVERED</h3>
+          <div style="font-size:11px;color:#78350f;line-height:1.55;">
+            <div style="margin-bottom:5px;"><strong style="color:#d97706;">Cost Reduction:</strong> Calculates CO₂ to reduce sensors; optimizes chemical dosing</div>
+            <div style="margin-bottom:5px;"><strong style="color:#dc2626;">Risk Mitigation:</strong> Prevents mass mortalities through proactive monitoring</div>
+            <div style="margin-bottom:5px;"><strong style="color:#0369a1;">Speed to Decision:</strong> Hours of manual calc → seconds of visual intelligence</div>
             <div><strong style="color:#10b981;">Scalability:</strong> Manages multiple RAS loops from a single platform</div>
+          </div>
+        </div>
+        <div style="background:#ecfdf5;border-left:4px solid #14b8a6;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#065f46;margin-bottom:6px;font-weight:800;letter-spacing:.5px;">INVESTMENT</h3>
+          <div style="font-size:11px;color:#115e59;line-height:1.55;">
+            <div style="margin-bottom:5px;"><strong style="font-size:18px;color:#f59e0b;">NOK 10M</strong> <span style="color:#92400e;">seeking from investors</span></div>
+            <div style="margin-bottom:5px;"><strong style="font-size:14px;color:#14b8a6;">NOK 5M</strong> Innovation Norway funding secured</div>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(20,184,166,0.2);">
+              <strong>SaaS:</strong> $99–$799/mo per facility<br>
+              <strong>Target:</strong> Y1: 10 → Y2: 150 → Y3: 1,000+ customers<br>
+              <strong>ARR Target Y2:</strong> NOK 5.9M
+            </div>
+          </div>
+        </div>
+        <div style="background:#f8fafc;border-left:4px solid #64748b;border-radius:8px;padding:14px 16px;">
+          <h3 style="font-size:14px;color:#334155;margin-bottom:6px;font-weight:800;letter-spacing:.5px;">MARKET</h3>
+          <div style="font-size:11px;color:#475569;line-height:1.55;">
+            <strong>$5–7B</strong> global RAS market → <strong>$10–17B</strong> by 2030s<br>
+            <strong>6,500+</strong> commercial RAS installations<br>
+            EU digital traceability mandate Jan 2026
           </div>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <div style="margin-top:14px;text-align:center;font-size:11px;color:#94a3b8;letter-spacing:1px;">Aqua Intel AS &bull; Moreneveien 1, 3158 Andebu, Norway &bull; Maritime | Landbased | Environmental</div>
+    <div style="text-align:center;font-size:9px;color:#94a3b8;letter-spacing:1px;border-top:1px solid #e2e8f0;padding-top:8px;">Aqua Intel AS &bull; Moreneveien 1, 3158 Andebu, Norway &bull; Maritime | Landbased | Environmental &bull; Confidential — For Investor Use Only</div>
   </div>
 </div>
 
@@ -815,6 +851,7 @@ function go(i){
   if(cur===2){_isoInited=false;_ci['demo-1']=false;initIsolatedCharts();initLiveControls();showPlayBtn();initPreviewChart();}
   if(cur===3){init8Systems();}
   if(cur===5){initBizDonut();}
+  if(cur===9){initOnepagerChart();}
 }
 
 function stagger(slide){
@@ -873,6 +910,7 @@ document.addEventListener('keydown',e=>{
     if(timerOn){const t=TIMING[cur];el.textContent=t?`~${t}s`:'Q&A';}
   }
   if(e.key>='1'&&e.key<='9'){const n=parseInt(e.key)-1;if(n<total)go(n);}
+  if(e.key==='p'||e.key==='P'){if(cur===total-1){window.print();}}
 });
 
 // ── Time-series line charts (pH, TAN, CO2 — traditional monitoring) ──
@@ -1089,6 +1127,22 @@ function stopAutoPlay(){
   reset('live-tgt-ph','7.5');reset('live-tgt-alk','2.5');
   const adjEl=document.getElementById('live-adj-result');
   if(adjEl){adjEl.style.display='none';adjEl.style.opacity='0';}
+}
+
+// ── One Pager Chart ──
+let _opChartInited=false;
+function initOnepagerChart(){
+  if(_opChartInited)return;_opChartInited=true;
+  const el=document.getElementById('onepager-chart');
+  if(!el)return;
+  // Use the same initChart logic but with a static config
+  const p={temp:12,salinity:0,initial_ph:8.4,initial_alk:4.2,target_ph:7.4,target_alk:3.0,
+    tan:1.5,uia_limit:0.02,co2_limit:15,dic_max:5,alk_max:5,volume:1000,calcium:412};
+  window._liveShowPh=true;
+  window._liveShowOmega=false;
+  window._liveShowTarget=true;
+  _ci['onepager-chart']=false;
+  initChart('onepager-chart',p);
 }
 
 // ── Business Model Donut Chart ──
