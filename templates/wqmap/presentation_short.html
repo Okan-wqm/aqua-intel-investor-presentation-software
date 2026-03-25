@@ -711,21 +711,21 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 <!-- 8. INVESTMENT (combined: investment + use of funds) -->
 <div class="slide teal center">
   <div class="sh"><span class="brand">Aqua Intel &bull; Aqua Intel AS</span></div>
-  <h2>INVESTMENT OPPORTUNITY</h2>
-  <div class="sub">Join Us in Building the Intelligence Layer for Global Aquaculture</div>
-  <div class="stats" style="margin-bottom:20px;">
-    <div class="stat"><div class="n" data-target="NOK 10M" style="font-size:56px;background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;background-clip:text;">0</div><div class="l" style="color:#fcd34d;font-size:16px;font-weight:600;">Seeking from investors</div></div>
-    <div class="stat"><div class="n" data-target="NOK 5M" style="font-size:48px;">0</div><div class="l">Innovation Norway funding<br>secured</div></div>
+  <h2 style="font-size:52px;">INVESTMENT OPPORTUNITY</h2>
+  <div class="sub" style="font-size:24px;">Join Us in Building the Intelligence Layer for Global Aquaculture</div>
+  <div class="stats" style="margin-bottom:24px;gap:80px;">
+    <div class="stat"><div class="n" data-target="NOK 10M" style="font-size:64px;background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;background-clip:text;">0</div><div class="l" style="color:#fcd34d;font-size:20px;font-weight:600;">Seeking from investors</div></div>
+    <div class="stat"><div class="n" data-target="NOK 5M" style="font-size:56px;">0</div><div class="l" style="font-size:18px;">Innovation Norway funding<br>secured</div></div>
   </div>
 
   <!-- Use of funds bar -->
-  <div class="alloc"><div class="a1" style="flex:40;">40% Sales & Marketing</div><div class="a2" style="flex:35;">35% Product Dev</div><div class="a3">15% Ops</div><div class="a4">10%</div></div>
+  <div class="alloc" style="height:52px;max-width:1000px;"><div class="a1" style="flex:40;font-size:16px;">40% Sales & Marketing</div><div class="a2" style="flex:35;font-size:16px;">35% Product Dev</div><div class="a3" style="font-size:14px;">15% Ops</div><div class="a4" style="font-size:12px;">10%</div></div>
 
-  <div class="cards c4" style="max-width:1000px;">
-    <div class="card purple"><h3>Proprietary Technology</h3><p>60+ functions. Years of R&D. Competitors cannot replicate.</p></div>
-    <div class="card green"><h3>Explosive Market</h3><p>RAS doubling to $10–17B. $1.3B invested in H1 2025 alone.</p></div>
-    <div class="card cyan"><h3>Scalable SaaS</h3><p>Per-facility licensing. Recurring revenue. Software = 30% of market.</p></div>
-    <div class="card amber"><h3>Regulatory Catalyst</h3><p>EU 2026 mandate + Norway data transfer = monitoring becomes mandatory.</p></div>
+  <div class="cards c4" style="max-width:1100px;">
+    <div class="card purple" style="padding:28px 24px;"><h3 style="font-size:20px;">Proprietary Technology</h3><p style="font-size:16px;">60+ functions. Years of R&D. Competitors cannot replicate.</p></div>
+    <div class="card green" style="padding:28px 24px;"><h3 style="font-size:20px;">Explosive Market</h3><p style="font-size:16px;">RAS doubling to $10–17B. $1.3B invested in H1 2025 alone.</p></div>
+    <div class="card cyan" style="padding:28px 24px;"><h3 style="font-size:20px;">Scalable SaaS</h3><p style="font-size:16px;">Per-facility licensing. Recurring revenue. $399–$1,400/mo.</p></div>
+    <div class="card amber" style="padding:28px 24px;"><h3 style="font-size:20px;">Regulatory Catalyst</h3><p style="font-size:16px;">EU 2026 mandate + Norway data transfer = monitoring mandatory.</p></div>
   </div>
 </div>
 
@@ -1224,7 +1224,7 @@ const SYS8=[
 
 function init8Systems(){
   SYS8.forEach(s=>{
-    initChart(s.id,{...s.p,volume:1000,calcium:412,dic_max:5,alk_max:5});
+    initChart(s.id,{...s.p,volume:1000,calcium:412,dic_max:8,alk_max:8});
     const ap={temp:s.p.temp,salinity:s.p.salinity||0,calcium:412,
       initial_ph:s.p.initial_ph,initial_alk:s.p.initial_alk,
       target_ph:s.p.target_ph,target_alk:s.p.target_alk,
