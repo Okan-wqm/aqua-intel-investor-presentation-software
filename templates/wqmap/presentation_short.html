@@ -439,8 +439,8 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
         <svg width="30" height="30" viewBox="0 0 30 30"><path d="M8 4 L15 26 L22 4" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/><path d="M10 18 L15 26 L20 18" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round"/></svg>
         <svg width="30" height="30" viewBox="0 0 30 30"><path d="M8 4 L15 26 L22 4" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"/><path d="M10 18 L15 26 L20 18" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
-      <h2 style="color:#0369a1;font-size:18px;margin-bottom:6px;text-align:center;">Aqua Intel<br>Combines All</h2>
-      <p style="font-size:11px;color:#64748b;text-align:center;line-height:1.5;max-width:240px;">pH + NH₃ + CO₂ + Alkalinity + Omega — all interactions in one chart. Change any parameter and see the impact instantly.</p>
+      <h2 style="color:#0369a1;font-size:24px;margin-bottom:8px;text-align:center;">Aqua Intel<br>Combines All</h2>
+      <p style="font-size:14px;color:#475569;text-align:center;line-height:1.6;max-width:250px;font-weight:500;">pH + NH₃ + CO₂ + Alkalinity + Omega — all interactions in one chart. Change any parameter and see the impact instantly.</p>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:3px;width:100%;">
         <div style="font-size:7px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">Layers</div>
         <div style="display:flex;gap:8px;margin-bottom:6px;">
@@ -667,7 +667,7 @@ function go(i){
 
   // Charts — slide indices (0-based)
   if(cur!==2) stopAutoPlay();
-  if(cur===2){_isoInited=false;_ci['demo-1']=false;initIsolatedCharts();initLiveControls();showPlayBtn();}
+  if(cur===2){_isoInited=false;_ci['demo-1']=false;initIsolatedCharts();initLiveControls();showPlayBtn();initPreviewChart();}
   if(cur===3){init8Systems();}
 }
 
@@ -924,6 +924,15 @@ function startAutoPlay(){
 function showPlayBtn(){
   const btn=document.getElementById('play-btn');
   if(btn)btn.classList.remove('hide');
+}
+
+function initPreviewChart(){
+  // Show chart fully loaded with all layers on, but play button on top
+  window._liveShowPh=true;
+  window._liveShowOmega=false;
+  window._liveShowTarget=true;
+  _ci['demo-1']=false;
+  initChart('demo-1',{temp:15,salinity:34,initial_ph:8.2,initial_alk:3.0,target_ph:7.5,target_alk:2.5,tan:1.0,uia_limit:0.02,co2_limit:15,dic_max:6,alk_max:6});
 }
 
 function stopAutoPlay(){
