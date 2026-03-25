@@ -938,7 +938,7 @@ const SYS8=[
 
 function init8Systems(){
   SYS8.forEach(s=>{
-    initChart(s.id,{...s.p,volume:1000,calcium:412,dic_max:3.5,alk_max:5.5});
+    initChart(s.id,{...s.p,volume:1000,calcium:412,dic_max:5,alk_max:5});
     const ap={temp:s.p.temp,salinity:s.p.salinity||0,calcium:412,
       initial_ph:s.p.initial_ph,initial_alk:s.p.initial_alk,
       target_ph:s.p.target_ph,target_alk:s.p.target_alk,
