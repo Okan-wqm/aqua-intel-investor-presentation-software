@@ -351,6 +351,11 @@ p{font-size:15px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 .handwrite-wrap{display:inline-block;overflow:hidden;z-index:1;}
 
 /* ═══ VERSION BADGE ═══ */
+/* ═══ SYSTEM CELLS ═══ */
+.sys-cell{display:flex;flex-direction:column;gap:4px;}
+.recipe-label{font-size:8px;font-family:var(--font-mono);color:#5eead4;background:rgba(20,184,166,0.1);border:1px solid rgba(20,184,166,0.2);border-radius:6px;padding:4px 8px;text-align:center;min-height:20px;line-height:1.4;letter-spacing:.2px;}
+.recipe-label:empty{display:none;}
+
 /* ═══ PLAY BUTTON ═══ */
 .play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;
   display:flex;align-items:center;gap:10px;padding:14px 28px;
@@ -488,23 +493,22 @@ p{font-size:15px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   </div>
 </div>
 
-<!-- 4. MULTI-SYSTEM DEMO (4 systems) -->
-<div class="slide teal center" style="padding:45px 60px;">
+<!-- 4. 8 SYSTEMS + RECIPES -->
+<div class="slide teal center" style="padding:35px 50px;">
   <div class="sh"><span class="brand">Aqua Intel &bull; The Solution</span><span class="tag">Multi-System Management</span></div>
 
-  <h2 style="font-size:22px;margin-bottom:4px;">Imagine Managing 4 Systems At Once</h2>
-  <div class="sub" style="font-size:11px;margin-bottom:6px;">Each system has independent water chemistry. Aqua Intel manages them all.</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;width:100%;max-width:1100px;height:280px;z-index:1;">
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;aspect-ratio:1;" id="demo-4a"><div class="cl">System 1</div></div>
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;aspect-ratio:1;" id="demo-4b"><div class="cl">System 2</div></div>
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;aspect-ratio:1;" id="demo-4c"><div class="cl">System 3</div></div>
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;aspect-ratio:1;" id="demo-4d"><div class="cl">System 4</div></div>
-  </div>
+  <h2 style="font-size:20px;margin-bottom:2px;">Imagine Managing 8 Systems At Once</h2>
+  <div class="sub" style="font-size:10px;margin-bottom:4px;">Each system has independent water chemistry — all in toxic zones. Aqua Intel calculates the recipe to move each one to safety.</div>
 
-  <div class="cards c3" style="max-width:1100px;margin-top:10px;">
-    <div class="card cyan"><h3>60+ Scientific Functions</h3><p style="font-size:11px;">Built on scientifically validated water chemistry. Connects to any sensor infrastructure.</p></div>
-    <div class="card green"><h3>Continuous Monitoring</h3><p style="font-size:11px;">Tracks all parameters and chemical interdependencies in real time across every RAS loop.</p></div>
-    <div class="card purple"><h3>Instant Recipes</h3><p style="font-size:11px;">Models 9 chemicals simultaneously. Generates optimum management recipes in seconds.</p></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:1150px;z-index:1;">
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8a"><div class="cl">System 1 — Salmon</div></div><div class="recipe-label" id="recipe-8a"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8b"><div class="cl">System 2 — Salmon</div></div><div class="recipe-label" id="recipe-8b"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8c"><div class="cl">System 3 — Trout</div></div><div class="recipe-label" id="recipe-8c"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8d"><div class="cl">System 4 — Charr</div></div><div class="recipe-label" id="recipe-8d"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8e"><div class="cl">System 5 — Shrimp</div></div><div class="recipe-label" id="recipe-8e"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8f"><div class="cl">System 6 — Barramundi</div></div><div class="recipe-label" id="recipe-8f"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8g"><div class="cl">System 7 — Tilapia</div></div><div class="recipe-label" id="recipe-8g"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:180px;margin:0;max-width:none;" id="demo-8h"><div class="cl">System 8 — Sea Bass</div></div><div class="recipe-label" id="recipe-8h"></div></div>
   </div>
 </div>
 
@@ -650,7 +654,7 @@ function go(i){
   // Charts — slide indices (0-based)
   if(cur!==2) stopAutoPlay();
   if(cur===2){_isoInited=false;_ci['demo-1']=false;initIsolatedCharts();initLiveControls();showPlayBtn();}
-  if(cur===3){initChart('demo-4a',{});initChart('demo-4b',{initial_ph:7.8,initial_alk:2.5,target_ph:8.5,target_alk:3.8});initChart('demo-4c',{temp:20,salinity:28,initial_ph:7.2,target_alk:2.8});initChart('demo-4d',{temp:28,calcium:350,initial_ph:8.0,initial_alk:3.0,target_ph:8.8,target_alk:4.0});}
+  if(cur===3){init8Systems();}
 }
 
 function stagger(slide){
@@ -916,6 +920,38 @@ function stopAutoPlay(){
   reset('live-tgt-ph','7.5');reset('live-tgt-alk','2.5');
   const adjEl=document.getElementById('live-adj-result');
   if(adjEl){adjEl.style.display='none';adjEl.style.opacity='0';}
+}
+
+// ── 8 Systems with recipes ──
+const SYS8=[
+  {id:'demo-8a',r:'recipe-8a', p:{temp:12,salinity:0,initial_ph:8.4,initial_alk:4.2,target_ph:7.4,target_alk:2.8,tan:2.5,uia_limit:0.02,co2_limit:10}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8b',r:'recipe-8b', p:{temp:14,salinity:0,initial_ph:8.1,initial_alk:3.8,target_ph:7.3,target_alk:2.5,tan:3.0,uia_limit:0.02,co2_limit:10}, rg1:'hcl',rg2:'plusCo2'},
+  {id:'demo-8c',r:'recipe-8c', p:{temp:10,salinity:0,initial_ph:8.3,initial_alk:4.5,target_ph:7.5,target_alk:3.0,tan:2.0,uia_limit:0.015,co2_limit:10}, rg1:'na2co3',rg2:'hcl'},
+  {id:'demo-8d',r:'recipe-8d', p:{temp:8,salinity:0,initial_ph:8.5,initial_alk:4.0,target_ph:7.2,target_alk:2.5,tan:2.8,uia_limit:0.02,co2_limit:10}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8e',r:'recipe-8e', p:{temp:28,salinity:25,initial_ph:8.6,initial_alk:4.8,target_ph:7.8,target_alk:3.2,tan:2.2,uia_limit:0.02,co2_limit:10}, rg1:'nahco3',rg2:'hcl'},
+  {id:'demo-8f',r:'recipe-8f', p:{temp:26,salinity:5,initial_ph:8.2,initial_alk:3.5,target_ph:7.4,target_alk:2.6,tan:3.0,uia_limit:0.025,co2_limit:10}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8g',r:'recipe-8g', p:{temp:28,salinity:0,initial_ph:8.0,initial_alk:3.2,target_ph:7.2,target_alk:2.2,tan:2.5,uia_limit:0.03,co2_limit:10}, rg1:'caoh2',rg2:'hcl'},
+  {id:'demo-8h',r:'recipe-8h', p:{temp:20,salinity:30,initial_ph:8.3,initial_alk:4.0,target_ph:7.5,target_alk:3.0,tan:2.0,uia_limit:0.02,co2_limit:10}, rg1:'caco3',rg2:'hcl'},
+];
+
+function init8Systems(){
+  SYS8.forEach(s=>{
+    initChart(s.id,{...s.p,volume:1000,calcium:412,dic_max:6,alk_max:6});
+    const ap={temp:s.p.temp,salinity:s.p.salinity||0,calcium:412,
+      initial_ph:s.p.initial_ph,initial_alk:s.p.initial_alk,
+      target_ph:s.p.target_ph,target_alk:s.p.target_alk,
+      volume:1000,reagent1:s.rg1,reagent2:s.rg2};
+    fetch(`/api/deffeyes-adjust/?${new URLSearchParams(ap)}`).then(r=>r.json()).then(d=>{
+      const el=document.getElementById(s.r);
+      if(!el)return;
+      if(d.feasible){
+        const f=(v,u)=>v>=1?`${v.toFixed(1)} ${u}`:`${(v*1000).toFixed(0)} m${u}`;
+        el.textContent=`${d.reagent1.cmpd} ${f(d.reagent1.amount,d.reagent1.unit)} + ${d.reagent2.cmpd} ${f(d.reagent2.amount,d.reagent2.unit)}`;
+      } else {
+        el.textContent='Calculating...';
+      }
+    }).catch(()=>{});
+  });
 }
 
 // ── Full charts ──
