@@ -351,6 +351,10 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 .handwrite-wrap{display:inline-block;overflow:hidden;z-index:1;}
 
 /* ═══ VERSION BADGE ═══ */
+/* ═══ CHART SLIDE SCALE ═══ */
+.slide.chart-scale{transform-origin:center center;}
+.slide.chart-scale.active{transform:scale(0.9);}
+
 /* ═══ SYSTEM CELLS ═══ */
 .sys-cell{display:flex;flex-direction:column;gap:4px;}
 .recipe-label{font-size:16px;font-family:var(--font-mono);color:#5eead4;background:rgba(20,184,166,0.12);border:1px solid rgba(20,184,166,0.25);border-radius:8px;padding:10px 14px;text-align:center;min-height:32px;line-height:1.5;letter-spacing:.3px;font-weight:700;}
@@ -436,7 +440,7 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 </div>
 
 <!-- 3. LIVE DEMO — Problem → Solution (3 charts → combined) -->
-<div class="slide center" style="padding:0;overflow:hidden;">
+<div class="slide center chart-scale" style="padding:0;overflow:hidden;">
   <div class="sh"><span class="brand">Aqua Intel &bull; From Problem to Solution</span><span class="tag">Parameter Blindness → Intelligence</span></div>
 
   <!-- TOP: Others (light/warm background) -->
@@ -534,7 +538,7 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 </div>
 
 <!-- 4. 8 SYSTEMS + RECIPES -->
-<div class="slide teal center" style="padding:30px 40px;">
+<div class="slide teal center chart-scale" style="padding:30px 40px;">
   <div class="sh"><span class="brand">Aqua Intel &bull; The Solution</span><span class="tag">Multi-System Management</span></div>
 
   <h2 style="font-size:20px;margin-bottom:2px;">Imagine Managing 8 Systems At Once</h2>
@@ -570,7 +574,7 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 </div>
 
 <!-- 6. BUSINESS MODEL -->
-<div class="slide purple center" style="padding:40px 60px;">
+<div class="slide purple center chart-scale" style="padding:40px 60px;">
   <div class="sh"><span class="brand">Aqua Intel &bull; Aqua Intel AS</span></div>
   <h2>BUSINESS MODEL</h2>
   <div class="sub">SaaS Recurring Revenue — Water Chemistry & Decision Making</div>
