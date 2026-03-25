@@ -1,10 +1,11 @@
 from django.urls import path
 from . import views
-from .presentation_views import presentation_view
+from .presentation_views import presentation_view, presentation_short_view
 
 urlpatterns = [
     path('wqmap/', views.deffeyes_chart_view, name='deffeyes_chart'),
     path('presentation/', presentation_view, name='presentation'),
+    path('presentation/short/', presentation_short_view, name='presentation_short'),
     path('api/deffeyes-data/', views.deffeyes_data_api, name='deffeyes_data'),
     path('api/deffeyes-light/', views.light_update_api, name='deffeyes_light'),
     path('api/deffeyes-adjust/', views.adjust_api, name='deffeyes_adjust'),
