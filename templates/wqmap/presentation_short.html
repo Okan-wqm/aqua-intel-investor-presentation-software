@@ -383,30 +383,35 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 
 /* ═══ PRINT (A3 landscape, full page) ═══ */
 @media print{
-  @page{size:A3 landscape;margin:0;}
+  @page{size:A3 landscape;margin:5mm;}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important;}
-  html,body{width:100%;height:100%;overflow:hidden;background:#fff!important;margin:0;padding:0;}
-  .deck{position:static;width:100%;height:100%;}
-  .slide{display:none!important;position:static!important;opacity:1!important;visibility:visible!important;}
+  html,body{width:100%;height:100%;overflow:visible!important;background:#fff!important;margin:0;padding:0;}
+  .deck{position:static!important;width:100%!important;height:auto!important;}
+  .slide{display:none!important;position:static!important;opacity:1!important;visibility:visible!important;transform:none!important;}
   .slide::before,.slide::after{display:none!important;}
   .slide.onepager-slide{
-    display:flex!important;
-    width:100vw!important;height:100vh!important;
+    display:block!important;
+    width:100%!important;height:auto!important;
+    min-height:100vh!important;
     padding:0!important;
     background:#fff!important;
     page-break-inside:avoid;
-    overflow:hidden!important;
+    overflow:visible!important;
   }
   .onepager{
     transform:none!important;
-    width:100%!important;height:100%!important;
-    padding:6mm 8mm!important;
+    width:100%!important;height:auto!important;
+    min-height:calc(100vh - 10mm)!important;
+    padding:4mm 6mm!important;
     display:flex!important;flex-direction:column!important;
+    overflow:visible!important;
   }
-  .onepager h3{font-size:12pt!important;}
-  .onepager p,.onepager div{font-size:10pt!important;line-height:1.4!important;}
-  .onepager .chart-box{border:1px solid #ccc!important;}
-  .onepager #onepager-chart{height:100%!important;min-height:0!important;}
+  .onepager h3{font-size:11pt!important;}
+  .onepager p,.onepager div{font-size:9pt!important;line-height:1.35!important;}
+  /* Chart: fixed height for print so plotly renders fully */
+  #onepager-chart{height:280px!important;min-height:280px!important;}
+  #onepager-chart .plotly{height:100%!important;}
+  .js-plotly-plot,.plot-container{height:100%!important;}
   .nav-a,.progress,.counter,.timer-overlay,.version-badge,.particles,.no-print,.sh{display:none!important;}
 }
 
