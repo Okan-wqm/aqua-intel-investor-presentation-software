@@ -1025,22 +1025,23 @@ function initBizDonut(){
     values:[65,20,15],
     labels:['SaaS Platform','Integration','Consulting'],
     type:'pie',
-    hole:0.55,
-    marker:{colors:['#0ea5e9','#10b981','#8b5cf6'],line:{color:'#161030',width:2}},
+    hole:0.5,
+    marker:{colors:['#0ea5e9','#10b981','#8b5cf6'],line:{color:'#161030',width:3}},
     textinfo:'label+percent',
-    textposition:'outside',
-    textfont:{color:'#e4ddf5',size:14,family:'DM Sans'},
+    textposition:'inside',
+    insidetextorientation:'horizontal',
+    textfont:{color:'#fff',size:15,family:'DM Sans'},
     hovertemplate:'%{label}<br>%{percent}<extra></extra>',
-    pull:[0.03,0,0],
+    pull:[0.04,0,0],
   }],{
     showlegend:false,
     paper_bgcolor:'rgba(0,0,0,0)',
     plot_bgcolor:'rgba(0,0,0,0)',
-    margin:{t:10,r:10,b:10,l:10},
+    margin:{t:5,r:5,b:5,l:5},
     annotations:[{
-      text:'<b>NOK 5.9M</b><br>ARR Target Y2',
+      text:'<b style="font-size:20px">NOK 5.9M</b><br><span style="font-size:13px">ARR Target Y2</span>',
       showarrow:false,
-      font:{size:16,color:'#e4ddf5',family:'DM Sans'},
+      font:{size:18,color:'#e4ddf5',family:'DM Sans'},
       x:0.5,y:0.5,xanchor:'center',yanchor:'middle'
     }]
   },{responsive:true,displayModeBar:false});
