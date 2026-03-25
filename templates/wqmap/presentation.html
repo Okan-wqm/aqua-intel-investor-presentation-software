@@ -1198,14 +1198,16 @@ function stopAutoPlay(){
 const SYS8=[
   // All start in toxic zone (high pH + high TAN = high NH3, or high CO2)
   // Move to safe targets with different reagent combos
+  // pH DOWN scenarios (escape NH3 toxic zone) — use HCl + -CO2
   {id:'demo-8a',r:'recipe-8a', p:{temp:12,salinity:0,initial_ph:8.4,initial_alk:4.2,target_ph:7.4,target_alk:2.8,tan:1.5,uia_limit:0.02,co2_limit:15}, rg1:'hcl',rg2:'minusCo2'},
-  {id:'demo-8b',r:'recipe-8b', p:{temp:14,salinity:0,initial_ph:8.1,initial_alk:3.8,target_ph:7.3,target_alk:2.5,tan:1.8,uia_limit:0.02,co2_limit:18}, rg1:'hcl',rg2:'plusCo2'},
   {id:'demo-8c',r:'recipe-8c', p:{temp:10,salinity:0,initial_ph:8.3,initial_alk:4.5,target_ph:7.5,target_alk:3.0,tan:1.2,uia_limit:0.015,co2_limit:16}, rg1:'hcl',rg2:'minusCo2'},
   {id:'demo-8d',r:'recipe-8d', p:{temp:8,salinity:0,initial_ph:8.5,initial_alk:4.0,target_ph:7.2,target_alk:2.5,tan:2.0,uia_limit:0.02,co2_limit:20}, rg1:'hcl',rg2:'minusCo2'},
-  {id:'demo-8e',r:'recipe-8e', p:{temp:28,salinity:25,initial_ph:8.6,initial_alk:4.8,target_ph:7.8,target_alk:3.2,tan:1.0,uia_limit:0.02,co2_limit:15}, rg1:'hcl',rg2:'nahco3'},
   {id:'demo-8f',r:'recipe-8f', p:{temp:26,salinity:5,initial_ph:8.2,initial_alk:3.5,target_ph:7.4,target_alk:2.6,tan:1.5,uia_limit:0.025,co2_limit:17}, rg1:'hcl',rg2:'minusCo2'},
-  {id:'demo-8g',r:'recipe-8g', p:{temp:28,salinity:0,initial_ph:8.0,initial_alk:3.2,target_ph:7.2,target_alk:2.2,tan:1.8,uia_limit:0.03,co2_limit:20}, rg1:'hcl',rg2:'plusCo2'},
-  {id:'demo-8h',r:'recipe-8h', p:{temp:20,salinity:30,initial_ph:8.3,initial_alk:4.0,target_ph:7.5,target_alk:3.0,tan:1.2,uia_limit:0.02,co2_limit:18}, rg1:'hcl',rg2:'minusCo2'},
+  // pH UP scenarios (escape CO2 toxic zone) — different reagent combos
+  {id:'demo-8b',r:'recipe-8b', p:{temp:14,salinity:0,initial_ph:6.8,initial_alk:1.5,target_ph:7.4,target_alk:2.8,tan:1.8,uia_limit:0.02,co2_limit:18}, rg1:'nahco3',rg2:'naoh'},
+  {id:'demo-8e',r:'recipe-8e', p:{temp:28,salinity:25,initial_ph:7.0,initial_alk:1.8,target_ph:7.8,target_alk:3.2,tan:1.0,uia_limit:0.02,co2_limit:15}, rg1:'na2co3',rg2:'hcl'},
+  {id:'demo-8g',r:'recipe-8g', p:{temp:28,salinity:0,initial_ph:6.9,initial_alk:1.6,target_ph:7.3,target_alk:2.5,tan:1.8,uia_limit:0.03,co2_limit:20}, rg1:'caco3',rg2:'plusCo2'},
+  {id:'demo-8h',r:'recipe-8h', p:{temp:20,salinity:30,initial_ph:7.0,initial_alk:1.8,target_ph:7.5,target_alk:3.0,tan:1.2,uia_limit:0.02,co2_limit:18}, rg1:'caoh2',rg2:'nahco3'},
 ];
 
 function init8Systems(){
