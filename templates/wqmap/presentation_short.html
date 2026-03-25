@@ -390,9 +390,9 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   <div style="margin-top:20px;font-size:10px;color:var(--text-muted);">Investor Presentation &bull; 2026</div>
 </div>
 
-<!-- 2. THE PROBLEM -->
+<!-- 2. THE PROBLEM — Stats + Photo (same as full version) -->
 <div class="slide warm center">
-  <div class="sh"><span class="brand">Aqua Intel &bull; Aqua Intel AS</span></div>
+  <div class="sh"><span class="brand">Aqua Intel &bull; Aqua Intel AS &bull; Water Quality Management Intelligence</span></div>
   <h2>THE PROBLEM</h2>
   <div class="sub">A $15.5 Billion Crisis the Industry Cannot Afford to Ignore</div>
   <div class="stats">
@@ -400,27 +400,39 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
     <div class="stat"><div class="n" data-target="$15.5B">0</div><div class="l">in mortality costs across<br>4 nations (2013–2019)</div><div class="src">Dead Loss Report — Just Economics</div></div>
     <div class="stat"><div class="n" data-target="100M+">0</div><div class="l">fish deaths in Norway alone<br>in 2023 (record year)</div><div class="src">Norwegian Directorate of Fisheries</div></div>
   </div>
-  <div class="cards c3" style="max-width:1100px;">
-    <div class="card red"><h3>Parameter Blindness</h3><p>Current systems show pH, NH₃, CO₂ in isolation. But these interact — adjusting one shifts others into danger.</p></div>
-    <div class="card amber"><h3>Multi-System Chaos</h3><p>Modern RAS facilities run 2–8 independent loops. Each has its own chemistry. Exponentially harder to manage.</p></div>
-    <div class="card purple"><h3>Catastrophic Failures</h3><p>Atlantic Sapphire lost $167M in one year. AquaBounty ceased all operations. Every major RAS has experienced mass mortality events.</p></div>
+  <div style="display:flex;gap:20px;width:100%;max-width:1100px;z-index:1;align-items:stretch;">
+    <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+      <div class="card red"><h3>Parameter Blindness</h3><p>Current systems show pH, NH₃, CO₂ in isolation. But these interact — adjusting one shifts others into danger.</p></div>
+      <div class="card amber"><h3>Multi-System Chaos</h3><p>Modern RAS facilities run 2–8 independent loops. Each has its own chemistry. Exponentially harder to manage.</p></div>
+      <div class="card purple"><h3>Workforce Crisis</h3><p>RAS facilities are in remote locations. Qualified operators nearly impossible to find.</p></div>
+    </div>
+    <div class="photo" style="width:340px;min-height:280px;flex-shrink:0;">
+      <img src="/static/images/multiple-systems.jpg" alt="Multiple RAS systems">
+      <div class="photo-caption">Real RAS facility — multiple independent systems</div>
+    </div>
   </div>
 </div>
 
 <!-- 3. LIVE DEMO — Problem → Solution (3 charts → combined) -->
-<div class="slide white center" style="padding:40px 60px;">
+<div class="slide center" style="padding:0;overflow:hidden;">
   <div class="sh"><span class="brand">Aqua Intel &bull; From Problem to Solution</span><span class="tag">Parameter Blindness → Intelligence</span></div>
 
-  <h2 style="color:#64748b;font-size:20px;margin-bottom:4px;">This Is How Most Systems Work Today</h2>
-  <div class="sub" style="font-size:11px;margin-bottom:8px;">Three separate charts. No way to see interactions.</div>
+  <!-- TOP: Others (light/warm background) -->
+  <div style="width:100%;background:linear-gradient(180deg,#fef2f2 0%,#fef8f0 50%,#fff5f5 100%);padding:50px 60px 20px;display:flex;flex-direction:column;align-items:center;z-index:1;">
+    <h2 style="color:#991b1b;font-size:20px;margin-bottom:4px;">This Is How Others Do It</h2>
+    <div style="font-size:12px;color:#92400e;margin-bottom:10px;">Three separate charts. No way to see interactions. Parameter blindness.</div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:1100px;height:200px;z-index:1;">
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.04);" id="demo-ph"><div class="cl" style="color:#0369a1;">pH</div></div>
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;border-color:#fecaca;box-shadow:0 2px 8px rgba(220,38,38,0.06);" id="demo-tan"><div class="cl" style="color:#dc2626;border-color:#fecaca;">TAN</div></div>
-    <div class="chart-box" style="height:100%;margin:0;max-width:none;border-color:#fde68a;box-shadow:0 2px 8px rgba(217,119,6,0.06);" id="demo-co2"><div class="cl" style="color:#d97706;border-color:#fde68a;">CO₂</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;max-width:1100px;height:200px;">
+      <div class="chart-box" style="height:100%;margin:0;max-width:none;box-shadow:0 2px 8px rgba(0,0,0,0.04);border-color:#fecaca;" id="demo-ph"><div class="cl" style="color:#0369a1;">pH</div></div>
+      <div class="chart-box" style="height:100%;margin:0;max-width:none;border-color:#fecaca;box-shadow:0 2px 8px rgba(220,38,38,0.06);" id="demo-tan"><div class="cl" style="color:#dc2626;border-color:#fecaca;">TAN</div></div>
+      <div class="chart-box" style="height:100%;margin:0;max-width:none;border-color:#fde68a;box-shadow:0 2px 8px rgba(217,119,6,0.06);" id="demo-co2"><div class="cl" style="color:#d97706;border-color:#fde68a;">CO₂</div></div>
+    </div>
   </div>
 
-  <div style="display:flex;gap:16px;width:100%;max-width:1100px;align-items:stretch;z-index:1;margin-top:24px;flex:1;min-height:0;">
+  <!-- BOTTOM: Aqua Intel (cool/blue background) -->
+  <div style="width:100%;background:linear-gradient(180deg,#f0f9ff 0%,#e0f2fe 50%,#dbeafe 100%);padding:16px 60px 30px;display:flex;flex-direction:column;align-items:center;flex:1;z-index:1;">
+
+  <div style="display:flex;gap:16px;width:100%;max-width:1100px;align-items:stretch;flex:1;min-height:0;">
     <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:260px;flex-shrink:0;">
       <div style="display:flex;gap:14px;margin-bottom:14px;">
         <svg width="30" height="30" viewBox="0 0 30 30"><path d="M8 4 L15 26 L22 4" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round"/><path d="M10 18 L15 26 L20 18" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round"/></svg>
@@ -482,8 +494,8 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
     </div>
 
     <div style="flex:1;position:relative;min-height:0;">
-      <div class="chart-box" style="width:100%;height:100%;margin:0;box-shadow:0 4px 24px rgba(3,105,161,0.12);border-color:#bae6fd;border-width:2px;" id="demo-1">
-        <div class="cl" style="font-size:11px;">Aqua Intel — Live Combined Chart</div>
+      <div class="chart-box" style="width:100%;height:100%;margin:0;box-shadow:0 4px 24px rgba(3,105,161,0.12);border-color:#0284c7;border-width:2px;" id="demo-1">
+        <div class="cl" style="font-size:13px;font-weight:800;color:#0c4a6e;background:rgba(224,242,254,0.95);border-color:#0284c7;">The Innovative Aqua Intel Chart</div>
       </div>
       <button class="play-btn" id="play-btn" onclick="document.getElementById('play-btn').classList.add('hide');startAutoPlay();">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#0369a1" stroke-width="2"/><polygon points="13,10 13,22 23,16" fill="#0369a1"/></svg>
@@ -491,6 +503,8 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
       </button>
     </div>
   </div>
+
+  </div><!-- /bottom -->
 </div>
 
 <!-- 4. 8 SYSTEMS + RECIPES -->
