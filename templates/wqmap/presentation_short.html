@@ -400,12 +400,13 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   .onepager{
     transform:none!important;
     width:100%!important;height:100%!important;
-    padding:8mm 10mm!important;
+    padding:6mm 8mm!important;
     display:flex!important;flex-direction:column!important;
   }
-  .onepager h3{font-size:14pt!important;}
-  .onepager p,.onepager div{font-size:11pt!important;}
+  .onepager h3{font-size:12pt!important;}
+  .onepager p,.onepager div{font-size:10pt!important;line-height:1.4!important;}
   .onepager .chart-box{border:1px solid #ccc!important;}
+  .onepager #onepager-chart{height:100%!important;min-height:0!important;}
   .nav-a,.progress,.counter,.timer-overlay,.version-badge,.particles,.no-print,.sh{display:none!important;}
 }
 
@@ -758,102 +759,75 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
       </div>
     </div>
 
-    <!-- 4 column layout -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-top:12px;flex:1;">
+    <!-- 2 main columns: LEFT (chart+capabilities) | RIGHT (4x2 grid of cards) -->
+    <div style="display:flex;gap:14px;margin-top:12px;flex:1;min-height:0;">
 
-      <!-- Col 1: Problem + Solution + Moat -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:#fef2f2;border-left:5px solid #ef4444;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#991b1b;margin-bottom:6px;font-weight:800;">THE PROBLEM</h3>
-          <p style="color:#7f1d1d;line-height:1.5;max-width:none;">865M farmed salmon died globally (2012–2022). $15.5B in mortality costs. Operators rely on fragmented tools — slow, error-prone, unable to scale across 2–8 independent RAS loops.</p>
-        </div>
-        <div style="background:#f0f9ff;border-left:5px solid #0369a1;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#0c4a6e;margin-bottom:6px;font-weight:800;">THE SOLUTION</h3>
-          <p style="color:#1e3a5f;line-height:1.5;max-width:none;">60+ water chemistry functions. Real-time calculations across all parameters. Single integrated visual chart per system. Optimum management recipes — data to decision in seconds.</p>
-        </div>
-        <div style="background:#f5f3ff;border-left:5px solid #8b5cf6;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#5b21b6;margin-bottom:6px;font-weight:800;">COMPETITIVE MOAT</h3>
-          <p style="color:#4c1d95;line-height:1.5;max-width:none;">Only platform modeling full water chemistry interactions. Calculates derived toxic forms (NH₃, CO₂). 60+ scientific functions — years of R&D competitors cannot replicate.</p>
-        </div>
-      </div>
-
-      <!-- Col 2: Chart + Key Capabilities -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:#fff;border:2px solid #0284c7;border-radius:8px;overflow:hidden;position:relative;flex:1;min-height:0;">
-          <div style="position:absolute;top:8px;left:12px;font-size:12px;font-weight:800;color:#0c4a6e;background:rgba(224,242,254,0.95);padding:3px 10px;border-radius:4px;border:1px solid #0284c7;z-index:5;font-family:var(--font-mono);">The Aqua Intel Chart</div>
+      <!-- LEFT: Chart + Capabilities -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;">
+        <div style="background:#fff;border:3px solid #0284c7;border-radius:10px;overflow:hidden;position:relative;flex:1;min-height:0;">
+          <div style="position:absolute;top:10px;left:14px;font-size:14px;font-weight:800;color:#0c4a6e;background:rgba(224,242,254,0.95);padding:4px 12px;border-radius:6px;border:1px solid #0284c7;z-index:5;font-family:var(--font-mono);">The Innovative Aqua Intel Chart</div>
           <div id="onepager-chart" style="width:100%;height:100%;"></div>
         </div>
         <div style="background:#f0fdf4;border-left:5px solid #10b981;border-radius:8px;padding:16px 18px;">
           <h3 style="color:#065f46;margin-bottom:8px;font-weight:800;">KEY CAPABILITIES</h3>
           <div style="color:#14532d;line-height:1.7;">
-            &#10003; Real-time sensor integration (any hardware)<br>
-            &#10003; Multi-system dashboard (2–8+ RAS loops)<br>
-            &#10003; Automated NH₃ / CO₂ toxic form calculation<br>
-            &#10003; Species-specific safe/toxic zone mapping<br>
-            &#10003; 1–6 optimum recipes per situation<br>
-            &#10003; 9 chemicals in one visual chart
+            &#10003; Real-time sensor integration (any hardware) &bull; &#10003; Multi-system dashboard (2–8+ RAS loops)<br>
+            &#10003; Automated NH₃ / CO₂ toxic form calculation &bull; &#10003; Species-specific safe/toxic zone mapping<br>
+            &#10003; 1–6 optimum management recipes per situation &bull; &#10003; 9 chemicals in one visual chart
           </div>
         </div>
       </div>
 
-      <!-- Col 3: Value + Business Model -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:#fffbeb;border-left:5px solid #f59e0b;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#92400e;margin-bottom:8px;font-weight:800;">VALUE DELIVERED</h3>
-          <div style="color:#78350f;line-height:1.5;">
-            <div style="margin-bottom:6px;"><strong style="color:#d97706;">20–50%</strong> workforce reduction with automated decision making</div>
-            <div style="margin-bottom:6px;"><strong style="color:#dc2626;">34%</strong> mortality reduction with continuous monitoring</div>
-            <div style="margin-bottom:6px;"><strong style="color:#0369a1;">48–72h</strong> early warning before critical failures</div>
-            <div><strong style="color:#10b981;">8+ systems</strong> managed from one dashboard</div>
+      <!-- RIGHT: 4x2 grid of info cards -->
+      <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:0;">
+        <div style="background:#fef2f2;border-left:5px solid #ef4444;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#991b1b;margin-bottom:5px;font-weight:800;">THE PROBLEM</h3>
+          <p style="color:#7f1d1d;line-height:1.45;max-width:none;">865M salmon died globally. $15.5B in losses. Operators use fragmented tools — can't scale across 2–8 RAS loops.</p>
+        </div>
+        <div style="background:#f0f9ff;border-left:5px solid #0369a1;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#0c4a6e;margin-bottom:5px;font-weight:800;">THE SOLUTION</h3>
+          <p style="color:#1e3a5f;line-height:1.45;max-width:none;">60+ water chemistry functions. Real-time visual charts per system. Optimum recipes — data to decision in seconds.</p>
+        </div>
+        <div style="background:#fffbeb;border-left:5px solid #f59e0b;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#92400e;margin-bottom:5px;font-weight:800;">VALUE DELIVERED</h3>
+          <div style="color:#78350f;line-height:1.45;">
+            <strong style="color:#d97706;">20–50%</strong> less workforce &bull; <strong style="color:#dc2626;">34%</strong> less mortality<br>
+            <strong style="color:#0369a1;">48–72h</strong> early warning &bull; <strong style="color:#10b981;">8+ systems</strong> one dashboard
           </div>
         </div>
-        <div style="background:#f0f9ff;border-left:5px solid #06b6d4;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#0c4a6e;margin-bottom:8px;font-weight:800;">BUSINESS MODEL</h3>
-          <div style="color:#1e3a5f;line-height:1.5;">
-            <div style="margin-bottom:4px;"><strong>SaaS:</strong> $399–$1,400/mo per facility. 95% retention.</div>
-            <div style="margin-bottom:4px;"><strong>Integration:</strong> On-site sensor setup (SCADA, PLCs)</div>
-            <div><strong>Consulting:</strong> Premium water chemistry optimization</div>
+        <div style="background:#f0f9ff;border-left:5px solid #06b6d4;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#0c4a6e;margin-bottom:5px;font-weight:800;">BUSINESS MODEL</h3>
+          <div style="color:#1e3a5f;line-height:1.45;">
+            <strong>SaaS:</strong> $399–$1,400/mo &bull; 95% retention<br>
+            <strong>Integration:</strong> SCADA/PLC setup &bull; <strong>Consulting</strong>
           </div>
         </div>
-        <div style="background:#f8fafc;border-left:5px solid #64748b;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#334155;margin-bottom:8px;font-weight:800;">MARKET OPPORTUNITY</h3>
-          <div style="color:#475569;line-height:1.5;">
-            <div style="margin-bottom:4px;"><strong>$5–7B</strong> global RAS market → <strong>$10–17B</strong> by 2030s</div>
-            <div style="margin-bottom:4px;"><strong>6,500+</strong> commercial RAS installations</div>
-            <div>EU digital traceability mandate Jan 2026. Norway mandates automatic data transfer.</div>
+        <div style="background:#f8fafc;border-left:5px solid #64748b;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#334155;margin-bottom:5px;font-weight:800;">MARKET</h3>
+          <div style="color:#475569;line-height:1.45;">
+            <strong>$5–7B</strong> → <strong>$10–17B</strong> by 2030s<br>
+            6,500+ RAS installations &bull; EU mandate 2026
           </div>
         </div>
-      </div>
-
-      <!-- Col 4: Investment + Roadmap -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:#ecfdf5;border-left:5px solid #14b8a6;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#065f46;margin-bottom:8px;font-weight:800;">INVESTMENT</h3>
-          <div style="color:#115e59;line-height:1.5;">
-            <div style="margin-bottom:6px;"><strong style="font-size:24px;color:#f59e0b;">NOK 10M</strong> <span style="color:#92400e;font-weight:600;">seeking</span></div>
-            <div style="margin-bottom:8px;"><strong style="font-size:18px;color:#14b8a6;">NOK 5M</strong> Innovation Norway secured</div>
-            <div style="border-top:1px solid rgba(20,184,166,0.3);padding-top:8px;">
-              <strong>Use of Funds:</strong><br>
-              40% Sales & Marketing<br>
-              35% Product Development<br>
-              15% Operations &bull; 10% G&A
-            </div>
+        <div style="background:#ecfdf5;border-left:5px solid #14b8a6;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#065f46;margin-bottom:5px;font-weight:800;">INVESTMENT</h3>
+          <div style="color:#115e59;line-height:1.45;">
+            <strong style="font-size:20px;color:#f59e0b;">NOK 10M</strong> seeking &bull; <strong style="color:#14b8a6;">5M</strong> IN secured<br>
+            40% Sales &bull; 35% Dev &bull; 15% Ops &bull; 10% G&A
           </div>
         </div>
-        <div style="background:#fef2f2;border-left:5px solid #f87171;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#991b1b;margin-bottom:8px;font-weight:800;">GROWTH TARGETS</h3>
-          <div style="color:#7f1d1d;line-height:1.6;">
-            <div style="margin-bottom:4px;"><strong style="color:#0891b2;">Y1:</strong> 10 customers — Norway anchor</div>
-            <div style="margin-bottom:4px;"><strong style="color:#059669;">Y2:</strong> 150 customers — ARR NOK 13M</div>
-            <div><strong style="color:#d97706;">Y3:</strong> 1,000+ customers — Global standard</div>
+        <div style="background:#fef2f2;border-left:5px solid #f87171;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#991b1b;margin-bottom:5px;font-weight:800;">GROWTH TARGETS</h3>
+          <div style="color:#7f1d1d;line-height:1.45;">
+            <strong style="color:#0891b2;">Y1:</strong> 10 customers &bull; <strong style="color:#059669;">Y2:</strong> 150 / NOK 13M ARR<br>
+            <strong style="color:#d97706;">Y3:</strong> 1,000+ customers — Global standard
           </div>
         </div>
-        <div style="background:#f0f9ff;border-left:5px solid #0369a1;border-radius:8px;padding:16px 18px;">
-          <h3 style="color:#0c4a6e;margin-bottom:8px;font-weight:800;">ROADMAP</h3>
-          <div style="color:#1e3a5f;line-height:1.5;">
-            <div style="margin-bottom:4px;"><strong>Q1–Q2 2026:</strong> Commercial validation, pilot users</div>
-            <div style="margin-bottom:4px;"><strong>Q3–Q4 2026:</strong> First revenue, sensor integration</div>
-            <div><strong>2027+:</strong> Global expansion, AI analytics, 8+ systems</div>
+        <div style="background:#f5f3ff;border-left:5px solid #8b5cf6;border-radius:8px;padding:14px 16px;">
+          <h3 style="color:#5b21b6;margin-bottom:5px;font-weight:800;">ROADMAP</h3>
+          <div style="color:#4c1d95;line-height:1.45;">
+            <strong>Q1–Q2 '26:</strong> Validate &bull; <strong>Q3–Q4 '26:</strong> Deploy<br>
+            <strong>2027+:</strong> Scale globally, AI, 8+ systems
           </div>
         </div>
       </div>
