@@ -408,10 +408,11 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   }
   .onepager h3{font-size:11pt!important;}
   .onepager p,.onepager div{font-size:9pt!important;line-height:1.35!important;}
-  /* Chart: fixed height for print so plotly renders fully */
-  #onepager-chart{height:280px!important;min-height:280px!important;}
-  #onepager-chart .plotly{height:100%!important;}
-  .js-plotly-plot,.plot-container{height:100%!important;}
+  /* Chart: explicit dimensions for print */
+  #onepager-chart-wrap{overflow:visible!important;height:250px!important;min-height:250px!important;flex:none!important;}
+  #onepager-chart{height:250px!important;min-height:250px!important;}
+  #onepager-chart .js-plotly-plot,#onepager-chart .plot-container,#onepager-chart .svg-container{width:100%!important;height:250px!important;}
+  .onepager svg.main-svg{width:100%!important;height:100%!important;}
   .nav-a,.progress,.counter,.timer-overlay,.version-badge,.particles,.no-print,.sh{display:none!important;}
 }
 
@@ -769,9 +770,9 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 
       <!-- LEFT: Chart + Capabilities -->
       <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;">
-        <div style="background:#fff;border:3px solid #0284c7;border-radius:10px;overflow:hidden;position:relative;flex:1;min-height:0;">
+        <div id="onepager-chart-wrap" style="background:#fff;border:3px solid #0284c7;border-radius:10px;overflow:visible;position:relative;flex:1;min-height:300px;">
           <div style="position:absolute;top:10px;left:14px;font-size:14px;font-weight:800;color:#0c4a6e;background:rgba(224,242,254,0.95);padding:4px 12px;border-radius:6px;border:1px solid #0284c7;z-index:5;font-family:var(--font-mono);">The Innovative Aqua Intel Chart</div>
-          <div id="onepager-chart" style="width:100%;height:100%;"></div>
+          <div id="onepager-chart" style="width:100%;height:100%;min-height:300px;"></div>
         </div>
         <div style="background:#f0fdf4;border-left:5px solid #10b981;border-radius:8px;padding:16px 18px;">
           <h3 style="color:#065f46;margin-bottom:8px;font-weight:800;">KEY CAPABILITIES</h3>
@@ -950,7 +951,12 @@ document.addEventListener('keydown',e=>{
     if(timerOn){const t=TIMING[cur];el.textContent=t?`~${t}s`:'Q&A';}
   }
   if(e.key>='1'&&e.key<='9'){const n=parseInt(e.key)-1;if(n<total)go(n);}
-  if(e.key==='p'||e.key==='P'){if(cur===total-1){window.print();}}
+  if(e.key==='p'||e.key==='P'){if(cur===total-1){
+    // Resize plotly chart before printing
+    const opChart=document.getElementById('onepager-chart');
+    if(opChart&&opChart.data){Plotly.relayout('onepager-chart',{width:opChart.offsetWidth,height:250});}
+    setTimeout(()=>window.print(),500);
+  }}
 });
 
 // ── Time-series line charts (pH, TAN, CO2 — traditional monitoring) ──
