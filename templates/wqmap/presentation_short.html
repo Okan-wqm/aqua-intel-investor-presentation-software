@@ -544,19 +544,50 @@ p{font-size:18px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
 </div>
 
 <!-- 6. BUSINESS MODEL -->
-<div class="slide purple center">
+<div class="slide purple center" style="padding:40px 60px;">
   <div class="sh"><span class="brand">Aqua Intel &bull; Aqua Intel AS</span></div>
   <h2>BUSINESS MODEL</h2>
-  <div class="sub">Recurring Revenue with High Gross Margins</div>
-  <div class="cards c3" style="max-width:1050px;">
-    <div class="card cyan"><h3 style="font-size:9px;color:#2d5a80;letter-spacing:2px;">CORE REVENUE</h3><h3>Software License (SaaS)</h3><p>Annual/monthly subscription per facility. Scales with RAS loops. Predictable recurring revenue.</p></div>
-    <div class="card green"><h3 style="font-size:9px;color:#2d5a80;letter-spacing:2px;">TECHNICAL</h3><h3>Sales & Integration</h3><p>On-site assessment, sensor integration (SCADA, PLCs), custom deployment. Deep customer relationship.</p></div>
-    <div class="card purple"><h3 style="font-size:9px;color:#2d5a80;letter-spacing:2px;">HIGH MARGIN</h3><h3>Consulting & Advisory</h3><p>Premium water chemistry optimization and RAS management consulting. Deepens customer lock-in.</p></div>
+  <div class="sub">SaaS Recurring Revenue — Water Chemistry & Decision Making</div>
+
+  <div style="display:flex;gap:30px;width:100%;max-width:1150px;z-index:1;align-items:center;">
+
+    <!-- Left: Donut chart -->
+    <div style="flex-shrink:0;width:320px;height:320px;z-index:1;" id="biz-donut"></div>
+
+    <!-- Right: Cards + Stats -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+      <div class="card cyan" style="padding:20px 24px;">
+        <h3 style="font-size:11px;color:#2d5a80;letter-spacing:2px;margin-bottom:2px;">CORE REVENUE</h3>
+        <h3>SaaS Platform — $99–$799/mo</h3>
+        <p>Per-facility subscription. Water chemistry intelligence + decision making engine. 95% retention rate.</p>
+      </div>
+      <div class="card green" style="padding:20px 24px;">
+        <h3 style="font-size:11px;color:#2d5a80;letter-spacing:2px;margin-bottom:2px;">TECHNICAL</h3>
+        <h3>Sales & Integration</h3>
+        <p>On-site assessment, sensor integration (SCADA, PLCs), custom deployment.</p>
+      </div>
+      <div class="card purple" style="padding:20px 24px;">
+        <h3 style="font-size:11px;color:#2d5a80;letter-spacing:2px;margin-bottom:2px;">HIGH MARGIN</h3>
+        <h3>Consulting & Advisory</h3>
+        <p>Premium water chemistry optimization. Deepens customer lock-in.</p>
+      </div>
+    </div>
   </div>
-  <div class="stats" style="margin-top:20px;">
-    <div class="stat"><div class="n" data-target="20–50%">0</div><div class="l">reduction in workforce<br>with automated monitoring<br>/ decision making</div></div>
-    <div class="stat"><div class="n" data-target="34%">0</div><div class="l">reduction in mortality<br>with automated monitoring</div></div>
-    <div class="stat"><div class="n" data-target="48–72h" style="font-size:44px;">0</div><div class="l">early warning before<br>critical failures</div></div>
+
+  <!-- Growth targets -->
+  <div style="display:flex;gap:16px;width:100%;max-width:1150px;z-index:1;margin-top:16px;">
+    <div class="card cyan" style="flex:1;display:flex;align-items:center;gap:16px;padding:16px 24px;">
+      <span style="font-size:36px;font-weight:900;color:#67e8f9;font-family:var(--font-mono);">Y1</span>
+      <div><span style="font-size:20px;font-weight:800;color:#fff;">10 Customers</span><br><span style="font-size:13px;color:#90b8d8;">Norway anchor. Validate pricing & product-market fit.</span></div>
+    </div>
+    <div class="card green" style="flex:1;display:flex;align-items:center;gap:16px;padding:16px 24px;">
+      <span style="font-size:36px;font-weight:900;color:#6ee7b7;font-family:var(--font-mono);">Y2</span>
+      <div><span style="font-size:20px;font-weight:800;color:#fff;">150 Customers</span><br><span style="font-size:13px;color:#90b8d8;">Nordics & Europe expansion. ARR NOK 5.9M target.</span></div>
+    </div>
+    <div class="card amber" style="flex:1;display:flex;align-items:center;gap:16px;padding:16px 24px;">
+      <span style="font-size:36px;font-weight:900;color:#fcd34d;font-family:var(--font-mono);">Y3</span>
+      <div><span style="font-size:20px;font-weight:800;color:#fff;">1,000+ Customers</span><br><span style="font-size:13px;color:#90b8d8;">Global scale. Americas & APAC. Industry standard.</span></div>
+    </div>
   </div>
 </div>
 
@@ -669,6 +700,7 @@ function go(i){
   if(cur!==2) stopAutoPlay();
   if(cur===2){_isoInited=false;_ci['demo-1']=false;initIsolatedCharts();initLiveControls();showPlayBtn();initPreviewChart();}
   if(cur===3){init8Systems();}
+  if(cur===5){initBizDonut();}
 }
 
 function stagger(slide){
@@ -943,6 +975,37 @@ function stopAutoPlay(){
   reset('live-tgt-ph','7.5');reset('live-tgt-alk','2.5');
   const adjEl=document.getElementById('live-adj-result');
   if(adjEl){adjEl.style.display='none';adjEl.style.opacity='0';}
+}
+
+// ── Business Model Donut Chart ──
+let _bizDonutInited=false;
+function initBizDonut(){
+  if(_bizDonutInited)return;_bizDonutInited=true;
+  const el=document.getElementById('biz-donut');
+  if(!el)return;
+  Plotly.newPlot('biz-donut',[{
+    values:[65,20,15],
+    labels:['SaaS Platform','Integration','Consulting'],
+    type:'pie',
+    hole:0.55,
+    marker:{colors:['#0ea5e9','#10b981','#8b5cf6'],line:{color:'#161030',width:2}},
+    textinfo:'label+percent',
+    textposition:'outside',
+    textfont:{color:'#e4ddf5',size:14,family:'DM Sans'},
+    hovertemplate:'%{label}<br>%{percent}<extra></extra>',
+    pull:[0.03,0,0],
+  }],{
+    showlegend:false,
+    paper_bgcolor:'rgba(0,0,0,0)',
+    plot_bgcolor:'rgba(0,0,0,0)',
+    margin:{t:10,r:10,b:10,l:10},
+    annotations:[{
+      text:'<b>NOK 5.9M</b><br>ARR Target Y2',
+      showarrow:false,
+      font:{size:16,color:'#e4ddf5',family:'DM Sans'},
+      x:0.5,y:0.5,xanchor:'center',yanchor:'middle'
+    }]
+  },{responsive:true,displayModeBar:false});
 }
 
 // ── 8 Systems with recipes ──
