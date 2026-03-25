@@ -501,14 +501,14 @@ p{font-size:15px;line-height:1.75;color:#90b8d8;max-width:850px;z-index:1;}
   <div class="sub" style="font-size:10px;margin-bottom:4px;">Each system has independent water chemistry — all in toxic zones. Aqua Intel calculates the recipe to move each one to safety.</div>
 
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:1150px;z-index:1;">
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8a"><div class="cl">System 1 — Salmon</div></div><div class="recipe-label" id="recipe-8a"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8b"><div class="cl">System 2 — Salmon</div></div><div class="recipe-label" id="recipe-8b"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8c"><div class="cl">System 3 — Trout</div></div><div class="recipe-label" id="recipe-8c"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8d"><div class="cl">System 4 — Charr</div></div><div class="recipe-label" id="recipe-8d"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8e"><div class="cl">System 5 — Shrimp</div></div><div class="recipe-label" id="recipe-8e"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8f"><div class="cl">System 6 — Barramundi</div></div><div class="recipe-label" id="recipe-8f"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8g"><div class="cl">System 7 — Tilapia</div></div><div class="recipe-label" id="recipe-8g"></div></div>
-    <div class="sys-cell"><div class="chart-box" style="height:260px;margin:0;max-width:none;" id="demo-8h"><div class="cl">System 8 — Sea Bass</div></div><div class="recipe-label" id="recipe-8h"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8a"><div class="cl">System 1</div></div><div class="recipe-label" id="recipe-8a"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8b"><div class="cl">System 2</div></div><div class="recipe-label" id="recipe-8b"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8c"><div class="cl">System 3</div></div><div class="recipe-label" id="recipe-8c"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8d"><div class="cl">System 4</div></div><div class="recipe-label" id="recipe-8d"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8e"><div class="cl">System 5</div></div><div class="recipe-label" id="recipe-8e"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8f"><div class="cl">System 6</div></div><div class="recipe-label" id="recipe-8f"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8g"><div class="cl">System 7</div></div><div class="recipe-label" id="recipe-8g"></div></div>
+    <div class="sys-cell"><div class="chart-box" style="height:340px;margin:0;max-width:none;" id="demo-8h"><div class="cl">System 8</div></div><div class="recipe-label" id="recipe-8h"></div></div>
   </div>
 </div>
 
@@ -925,15 +925,15 @@ function stopAutoPlay(){
 // ── 8 Systems with recipes ──
 const SYS8=[
   // pH DOWN scenarios (escape NH3 toxic zone)
-  {id:'demo-8a',r:'recipe-8a', p:{temp:12,salinity:0,initial_ph:8.4,initial_alk:4.2,target_ph:7.4,target_alk:2.8,tan:1.5,uia_limit:0.02,co2_limit:15}, rg1:'hcl',rg2:'minusCo2'},
-  {id:'demo-8c',r:'recipe-8c', p:{temp:10,salinity:0,initial_ph:8.3,initial_alk:4.5,target_ph:7.5,target_alk:3.0,tan:1.2,uia_limit:0.015,co2_limit:16}, rg1:'hcl',rg2:'minusCo2'},
-  {id:'demo-8d',r:'recipe-8d', p:{temp:8,salinity:0,initial_ph:8.5,initial_alk:4.0,target_ph:7.2,target_alk:2.5,tan:2.0,uia_limit:0.02,co2_limit:20}, rg1:'hcl',rg2:'minusCo2'},
-  {id:'demo-8f',r:'recipe-8f', p:{temp:26,salinity:5,initial_ph:8.2,initial_alk:3.5,target_ph:7.4,target_alk:2.6,tan:1.5,uia_limit:0.025,co2_limit:17}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8a',r:'recipe-8a', p:{temp:12,salinity:0,initial_ph:8.6,initial_alk:4.5,target_ph:7.4,target_alk:3.0,tan:1.5,uia_limit:0.02,co2_limit:15}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8c',r:'recipe-8c', p:{temp:10,salinity:0,initial_ph:8.5,initial_alk:4.8,target_ph:7.5,target_alk:3.2,tan:1.2,uia_limit:0.015,co2_limit:16}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8d',r:'recipe-8d', p:{temp:8,salinity:0,initial_ph:8.7,initial_alk:4.2,target_ph:7.3,target_alk:2.8,tan:2.0,uia_limit:0.02,co2_limit:20}, rg1:'hcl',rg2:'minusCo2'},
+  {id:'demo-8f',r:'recipe-8f', p:{temp:26,salinity:5,initial_ph:8.4,initial_alk:3.8,target_ph:7.4,target_alk:2.8,tan:1.5,uia_limit:0.025,co2_limit:17}, rg1:'hcl',rg2:'minusCo2'},
   // pH UP scenarios (escape CO2 toxic zone)
-  {id:'demo-8b',r:'recipe-8b', p:{temp:14,salinity:0,initial_ph:6.8,initial_alk:1.5,target_ph:7.4,target_alk:2.8,tan:1.8,uia_limit:0.02,co2_limit:18}, rg1:'nahco3',rg2:'naoh'},
-  {id:'demo-8e',r:'recipe-8e', p:{temp:28,salinity:25,initial_ph:7.0,initial_alk:1.8,target_ph:7.8,target_alk:3.2,tan:1.0,uia_limit:0.02,co2_limit:15}, rg1:'na2co3',rg2:'hcl'},
-  {id:'demo-8g',r:'recipe-8g', p:{temp:28,salinity:0,initial_ph:6.9,initial_alk:1.6,target_ph:7.3,target_alk:2.5,tan:1.8,uia_limit:0.03,co2_limit:20}, rg1:'caco3',rg2:'plusCo2'},
-  {id:'demo-8h',r:'recipe-8h', p:{temp:20,salinity:30,initial_ph:7.0,initial_alk:1.8,target_ph:7.5,target_alk:3.0,tan:1.2,uia_limit:0.02,co2_limit:18}, rg1:'caoh2',rg2:'nahco3'},
+  {id:'demo-8b',r:'recipe-8b', p:{temp:14,salinity:0,initial_ph:6.5,initial_alk:1.2,target_ph:7.4,target_alk:2.8,tan:1.8,uia_limit:0.02,co2_limit:18}, rg1:'nahco3',rg2:'naoh'},
+  {id:'demo-8e',r:'recipe-8e', p:{temp:28,salinity:25,initial_ph:6.8,initial_alk:1.5,target_ph:7.8,target_alk:3.2,tan:1.0,uia_limit:0.02,co2_limit:15}, rg1:'na2co3',rg2:'hcl'},
+  {id:'demo-8g',r:'recipe-8g', p:{temp:28,salinity:0,initial_ph:6.6,initial_alk:1.3,target_ph:7.3,target_alk:2.5,tan:1.8,uia_limit:0.03,co2_limit:20}, rg1:'caco3',rg2:'plusCo2'},
+  {id:'demo-8h',r:'recipe-8h', p:{temp:20,salinity:30,initial_ph:6.7,initial_alk:1.4,target_ph:7.5,target_alk:3.0,tan:1.2,uia_limit:0.02,co2_limit:18}, rg1:'caoh2',rg2:'nahco3'},
 ];
 
 function init8Systems(){
